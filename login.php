@@ -27,7 +27,7 @@
     <div class="container">
         <div class="card card-login mx-auto mt-5">
             <div class="card-header card-header-login">
-                <img src="public/images/logo.jpg">
+                <img src="uploads/logo.jpg">
             </div>
             <div class="card-body">
                 <!-- alert -->

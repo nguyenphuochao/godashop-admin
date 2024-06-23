@@ -18,6 +18,7 @@ class Product
     protected $star;
     protected $featured;
     protected $sale_price;
+
     function __construct(
         $id,
         $barcode,
@@ -198,11 +199,6 @@ class Product
     function setFeatured($featured)
     {
         $this->featured = $featured;
-        return $this;
-    }
-    function setSalePrice($sale_price)
-    {
-        $this->sale_price = $sale_price;
         return $this;
     }
 

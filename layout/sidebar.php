@@ -15,7 +15,7 @@
     <li class="nav-item dropdown <?= $c == 'product' ? 'active' : '' ?>">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fab fa-product-hunt"></i> <span>Sản phẩm</span></a>
         <div class="dropdown-menu <?= $c == 'product' ? 'show' : '' ?>" aria-labelledby="">
-            <a class="dropdown-item <?= $c == 'product' ? 'active' : '' ?>" href="index.php?c=product&a=index">Danh sách</a>
+            <a class="dropdown-item <?= $c == 'product' ? 'active' : '' ?>" href="index.php?c=product">Danh sách</a>
             <a class="dropdown-item <?= $c == 'product' && $a == 'add' ? 'active' : '' ?>" href="index.php?c=product&a=add">Thêm</a>
         </div>
     </li>

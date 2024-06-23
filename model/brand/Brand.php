@@ -4,7 +4,7 @@ class Brand
     protected $id;
     protected $name;
 
-    function __construct($id, $name,)
+    function __construct($id, $name)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,6 +23,7 @@ class Brand
     function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
     
 }
