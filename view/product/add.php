@@ -146,7 +146,7 @@
                 required: function(element) {
                     var discount = $("#discount_percentage").val();
                     return discount > 0;
-                }
+                },
             },
             inventory_qty: "required",
             category_id: "required",

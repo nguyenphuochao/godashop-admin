@@ -12,3 +12,15 @@ require "model/brand/Brand.php";
 
 require "model/staff/StaffRepository.php";
 require "model/staff/Staff.php";
+
+require "model/order/Order.php";
+require "model/order/OrderRepository.php";
+
+require "model/customer/Customer.php";
+require "model/customer/CustomerRepository.php";
+
+require "model/order_item/OrderItem.php";
+require "model/order_item/OrderItemRepository.php";
+
+require "model/status/Status.php";
+require "model/status/StatusRepository.php";

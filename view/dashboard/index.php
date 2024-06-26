@@ -6,20 +6,24 @@
             <li class="breadcrumb-item active">Tổng quan</li>
         </ol>
         <div class="mb-3 my-3">
-            <a href="#" class="active btn btn-primary">Hôm nay</a>
-            <a href="#" class="btn btn-primary">Hôm qua</a>
-            <a href="#" class="btn btn-primary">Tuần này</a>
-            <a href="#" class="btn btn-primary">Tháng này</a>
-            <a href="#" class="btn btn-primary">3 tháng</a>
-            <a href="#" class="btn btn-primary">Năm này</a>
+            <?php $type = !empty($_GET["type"]) ? $_GET["type"] : "today"; ?>
+            <a href="?type=today&from_date=<?= date('Y-m-d') ?>&to_date=<?= date('Y-m-d') ?>" class="<?= $type == 'today' ? 'active' : '' ?> btn btn-primary">Hôm nay</a>
+            <a href="?type=yesterday&from_date=<?= date('Y-m-d', strtotime("-1 days")) ?>&to_date=<?= date('Y-m-d', strtotime("-1 days")) ?>" class="<?= $type == 'yesterday' ? 'active' : '' ?> btn btn-primary">Hôm qua</a>
+            <a href="?type=thisweek&from_date=<?= date('Y-m-d', strtotime("this week")) ?>&to_date=<?= date('Y-m-d') ?>" class="<?= $type == 'thisweek' ? 'active' : '' ?> btn btn-primary">Tuần này</a>
+            <a href="?type=thismonth&from_date=<?= date('Y-m-01') ?>&to_date=<?= date('Y-m-d') ?>" class="<?= $type == 'thismonth' ? 'active' : '' ?> btn btn-primary">Tháng này</a>
+            <a href="?type=3months&from_date=<?= date('Y-m-d', strtotime("-3 months")) ?>&to_date=<?= date('Y-m-d') ?>" class="<?= $type == '3months' ? 'active' : '' ?> btn btn-primary">3 tháng</a>
+            <a href="?type=thisyear&from_date=<?= date('Y-01-01') ?>&to_date=<?= date('Y-m-d') ?>" class="<?= $type == 'thisyear' ? 'active' : '' ?> btn btn-primary">Năm này</a>
             <div class="dropdown" style="display:inline-block">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <div style="margin:20px">
-                        Từ ngày <input type="date" class="form-control" id="usr">
-                        Đến ngày <input type="date" class="form-control" id="usr">
-                        <br>
-                        <input type="submit" value="Tìm" class="btn btn-primary form-control">
+                        <form action="index.php?c=dashboard">
+                            Từ ngày <input type="date" name="from_date" class="form-control" id="usr" value="<?= $type == 'custom' ? $_GET["from_date"] : "" ?>">
+                            Đến ngày <input type="date" name="to_date" class="form-control" id="usr" value="<?= $type == 'custom' ? $_GET["to_date"] : "" ?>">
+                            <input type="hidden" name="type" value="custom">
+                            <br>
+                            <input type="submit" value="Tìm" class="btn btn-primary form-control">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -32,7 +36,7 @@
                         <div class="card-body-icon">
                             <i class="fas fa-fw fa-list"></i>
                         </div>
-                        <div class="mr-5">2 Đơn hàng</div>
+                        <div class="mr-5"><?= count($orders); ?> Đơn hàng</div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
                         <span class="float-left">Chi tiết</span>
@@ -42,13 +46,26 @@
                     </a>
                 </div>
             </div>
+            <!-- Tính toán doanh thu -->
+            <?php
+            $total_revenue = 0; // tổng doanh thu
+            $order_cancel = 0; // số lượng đơn hàng bị hủy
+            foreach ($orders as $order) {
+                if ($order->getOrderStatusID() != 6) {
+                    $total_revenue += $order->getSubTotal() + $order->getShippingFee();
+                } else {
+                    $order_cancel++;
+                }
+            }
+            ?>
             <div class="col-xl-4 col-sm-6 mb-3">
                 <div class="card text-white bg-success o-hidden h-100">
                     <div class="card-body">
                         <div class="card-body-icon">
                             <i class="fas fa-fw fa-shopping-cart"></i>
                         </div>
-                        <div class="mr-5">Doanh thu 3,500,000 đ</div>
+
+                        <div class="mr-5">Doanh thu <?= number_format($total_revenue); ?> đ</div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
                         <span class="float-left">Chi tiết</span>
@@ -64,7 +81,7 @@
                         <div class="card-body-icon">
                             <i class="fas fa-fw fa-life-ring"></i>
                         </div>
-                        <div class="mr-5">1 đơn hàng bị hủy</div>
+                        <div class="mr-5"><?= $order_cancel ?> đơn hàng bị hủy</div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
                         <span class="float-left">Chi tiết</span>
@@ -107,48 +124,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#112</td>
-                                <td>Nguyễn Văn A</td>
-                                <td>0932538468</td>
-                                <td>nguyenvana@gmail.com</td>
-                                <td>Đang xử lý</td>
-                                <td>2019-03-10 15:35:59 </td>
-                                <td>Trả tiền khi nhận hàng</td>
-                                <td>Nguyễn Văn E</td>
-                                <td>0123456789</td>
-                                <td>2019-03-13</td>
+                            <?php foreach ($orders as $order) : ?>
+                                <tr>
+                                    <td>#<?= $order->getID() ?></td>
+                                    <td><?= $order->getCustomer()->getName(); ?></td>
+                                    <td><?= $order->getCustomer()->getMobile(); ?></td>
+                                    <td><?= $order->getCustomer()->getEmail(); ?></td>
+                                    <td><?= $order->getStatus()->getDescription(); ?></td>
+                                    <td><?= $order->getCreatedDate() ?></td>
+                                    <td><?= $order->getPaymentMethod() == 0 ? 'COD' : 'BANK' ?></td>
+                                    <td><?= $order->getShippingFullname(); ?></td>
+                                    <td><?= $order->getShippingMobile(); ?></td>
+                                    <td><?= $order->getDeliveredDate(); ?></td>
 
-                                <td>50,000 đ</td>
-                                <td>2,000,000 đ</td>
-                                <td>2,050,000 đ</td>
-                                <td>278 Hòa Bình, Hiệp Tân, Tân Phú, TP.HCM</td>
-                                <td>Nguyễn Hữu Lộc</td>
-                                <td> <input type="button" onclick="Confirm('1');" value="Xác nhận" class="btn btn-primary btn-sm"></td>
-                                <td> <input type="button" onclick="Edit('1');" value="Sửa" class="btn btn-warning btn-sm"></td>
-                                <td> <input type="button" onclick="Delete('1');" value="Xóa" class="btn btn-danger btn-sm"></td>
-                            </tr>
-                            <tr>
-                                <td>#113</td>
-                                <td>Nguyễn Văn B</td>
-                                <td>0932222444</td>
-                                <td>nguyenvanb@gmail.com</td>
-                                <td>Đã xác nhận</td>
-                                <td>2019-01-10 15:35:59 </td>
-                                <td>Thanh toán qua ngân hàng</td>
-                                <td>Nguyễn Văn E</td>
-                                <td>0123456789</td>
-                                <td>2019-01-13</td>
-
-                                <td>30,000 đ</td>
-                                <td>1,500,000 đ</td>
-                                <td>1,530,000 đ</td>
-                                <td>279 Hòa Bình, Hiệp Tân, Tân Phú, TP.HCM</td>
-                                <td>Nguyễn Thị Lệ</td>
-                                <td> </td>
-                                <td> <input type="button" onclick="Edit('1');" value="Sửa" class="btn btn-warning btn-sm"></td>
-                                <td> <input type="button" onclick="Delete('1');" value="Xóa" class="btn btn-danger btn-sm"></td>
-                            </tr>
+                                    <td><?= number_format($order->getShippingFee()); ?> đ</td>
+                                    <td><?= number_format($order->getSubTotal()); ?> đ</td>
+                                    <td><?= number_format($order->getSubTotal() + $order->getShippingFee()); ?> đ</td>
+                                    <td>278 Hòa Bình, Hiệp Tân, Tân Phú, TP.HCM</td>
+                                    <td><?= $order->getStaff() ? $order->getStaff()->getName() : '' ?></td>
+                                    <?php if ($order->getOrderStatusID() == 1) : ?>
+                                        <td><a href="index.php?c=order&a=confirm&id=<?= $order->getID() ?>" class="btn btn-primary btn-sm">Xác nhận</a></td>
+                                    <?php endif; ?>
+                                    <td><a href="#" class="btn btn-warning btn-sm">Sửa</a></td>
+                                    <td><a href="#" class="btn btn-danger btn-sm">Xóa</a></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
