@@ -45,4 +45,12 @@ class StaffRepository extends BaseRepository
         $staff = current($staffs);
         return $staff;
     }
+
+    function findEmail($email)
+    {
+        $condition = "email = '$email'";
+        $staffs = $this->fetAll($condition);
+        $staff = current($staffs);
+        return $staff;
+    }
 }

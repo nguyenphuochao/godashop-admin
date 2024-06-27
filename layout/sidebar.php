@@ -3,13 +3,13 @@
     global $c, $a;
     ?>
     <li class="nav-item <?= $c == 'dashboard' ? 'active' : '' ?>">
-        <a class="nav-link" href="/"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Tổng quan</span></a>
+        <a class="nav-link" href="index.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Tổng quan</span></a>
     </li>
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown <?= $c == 'order' ? 'active' : '' ?>">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/order/list.html">Danh sách</a>
-            <a class="dropdown-item" href="../../pages/order/add.html">Thêm</a>
+        <div class="dropdown-menu <?= $c == 'order' ? 'show' : '' ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'order' ? 'active' : '' ?>" href="index.php?c=order">Danh sách</a>
+            <a class="dropdown-item <?= $c == 'product' && $a == 'add' ? 'active' : '' ?>" href="index.php?c=order&a=add">Thêm</a>
         </div>
     </li>
     <li class="nav-item dropdown <?= $c == 'product' ? 'active' : '' ?>">

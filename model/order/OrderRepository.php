@@ -5,8 +5,8 @@ class OrderRepository extends BaseRepository
     protected function fetchAll($condition = null, $sort = null)
     {
         global $conn;
-		$orders = array();
-		$sql = "SELECT * FROM `order`";
+        $orders = array();
+        $sql = "SELECT * FROM `order`";
         if ($condition) {
             $sql .= " WHERE $condition";
         }
@@ -86,5 +86,64 @@ class OrderRepository extends BaseRepository
         }
 
         return $this->fetchAll($condition, $sort, $limit);
+    }
+
+    function getAll()
+    {
+        return $this->fetchAll();
+    }
+
+    function find($id)
+    {
+        $condition = "id = $id";
+        $orders = $this->fetchAll($condition);
+        $order = current($orders);
+        return $order;
+    }
+
+    function delete(Order $order)
+    {
+        global $conn;
+        $id = $order->getID();
+        $sql = "DELETE FROM `order` WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+    }
+
+    function update(Order $order)
+    {
+        global $conn;
+        $id = $order->getID();
+        $created_date = $order->getCreatedDate();
+        $order_status_id = $order->getOrderStatusID();
+        $staff_id = $order->getStaffID();
+        $customer_id = $order->getCustomerID();
+        $shipping_fullname = $order->getShippingFullname();
+        $shipping_mobile = $order->getShippingMobile();
+        $payment_method = $order->getPaymentMethod();
+        $shipping_ward_id = $order->getShippingWardID();
+        $shipping_housenumber_street = $order->getShippingHousenumberStreet();
+        $shipping_fee = $order->getShippingFee();
+        $delivered_date = $order->getDeliveredDate();
+
+        $sql = "UPDATE `order` SET 
+                        created_date = '$created_date',
+                        order_status_id = $order_status_id,
+                        staff_id = $staff_id,
+                        customer_id = $customer_id,
+                        shipping_fullname = '$shipping_fullname',
+                        shipping_mobile = '$shipping_mobile',
+                        payment_method = '$payment_method',
+                        shipping_ward_id = '$shipping_ward_id',
+                        shipping_housenumber_street = '$shipping_housenumber_street',
+                        shipping_fee = $shipping_fee,
+                        delivered_date = '$delivered_date'
+                        WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
     }
 }

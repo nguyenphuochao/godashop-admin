@@ -1,8 +1,13 @@
 <?php require "layout/header.php" ?>
 <style>
-    font,
-    .error {
+    font,.error {
         color: red;
+    }
+    #img_url {
+    background: #ddd;
+    width: 200px;
+    height: 150px;
+    display: block;
     }
 </style>
 <div id="content-wrapper">
@@ -42,7 +47,9 @@
             <div class="form-group row">
                 <label class="col-md-12 control-label" for="name">Hình đại diện</label>
                 <div class="col-md-9 col-lg-6">
-                    <input name="image" id="image" type="file" class="form-control">
+                    <img src="" id="img_url" alt="your image">
+                    <br>
+                    <input name="image" type="file" id="img_file" onChange="img_pathUrl(this);">
                 </div>
             </div>
             <!-- Price -->
@@ -130,6 +137,13 @@
 <?php require "layout/footer.php" ?>
 
 <script>
+
+    // Load image in html
+    function img_pathUrl(input){
+        $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    }
+
+    // form validate
     $("#form-add").validate({
         rules: {
             barcode: "required",

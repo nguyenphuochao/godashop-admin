@@ -25,8 +25,10 @@ class AuthController
         }
         // success login
         if (!empty($remember_me)) {
-            setcookie("name", $staff->getName(), time() + 43200);
+            setcookie("email", $staff->getEmail(), time() + 604800); // lưu remember me 7 ngày
+            setcookie("name", $staff->getName(), time() + 604800); // 7×24×60×60=604,800 giây
         }
+        $_SESSION["email"] = $staff->getEmail();
         $_SESSION["name"] = $staff->getName();
         header("Location: index.php");
     }
@@ -35,6 +37,7 @@ class AuthController
     function logout()
     {
         session_destroy();
+        setcookie("email", "", time() - 43200);
         setcookie("name", "", time() - 43200);
         header("Location: login.php");
     }

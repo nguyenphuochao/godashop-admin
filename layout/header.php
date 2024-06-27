@@ -29,8 +29,8 @@
         <!-- Navbar -->
         <?php
         // check login
-        if (empty($_SESSION['name'])) {
-            if (!empty($_COOKIE["name"])) {
+        if (empty($_SESSION['email'])) {
+            if (!empty($_COOKIE["email"])) {
                 $_SESSION["name"] = $_COOKIE["name"];
             }else {
                 header("Location: login.php");
