@@ -24,3 +24,15 @@ require "model/order_item/OrderItemRepository.php";
 
 require "model/status/Status.php";
 require "model/status/StatusRepository.php";
+
+require "model/province/Province.php";
+require "model/province/ProvinceRepository.php";
+
+require "model/district/District.php";
+require "model/district/DistrictRepository.php";
+
+require "model/ward/Ward.php";
+require "model/ward/WardRepository.php";
+
+require "model/transport/Transport.php";
+require "model/transport/TransportRepository.php";

@@ -78,6 +78,7 @@ class Order
     {
         return $this->delivered_date;
     }
+    
     // Set attribute
     function setCreatedDate($created_date)
     {
@@ -166,5 +167,11 @@ class Order
         $statusRepository = new StatusRepository();
         $status = $statusRepository->find($this->order_status_id);
         return $status;
+    }
+    // BelongsTo ward
+    function getWard(){
+        $wardRepository = new WardRepository();
+        $ward = $wardRepository->find($this->shipping_ward_id);
+        return $ward;
     }
 }

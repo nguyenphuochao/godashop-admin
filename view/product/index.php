@@ -44,7 +44,7 @@
                             <?php foreach ($products as $product) : ?>
                                 <tr>
                                     <td><input type="checkbox" value="<?= $product->getID() ?>" class="ids" name="ids[]"></td>
-                                    <td><?= $product->getBarCode() ?></td>
+                                    <td><a href="index.php?c=product&a=edit&id=<?= $product->getID() ?>"><?= $product->getBarCode() ?></a></td>
                                     <td><?= $product->getSKU() ?></td>
                                     <td><?= $product->getName() ?></td>
                                     <td><img src="uploads/<?= $product->getFeaturedImage() ?>"></td>

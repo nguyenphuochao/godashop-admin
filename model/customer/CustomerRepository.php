@@ -47,4 +47,10 @@ class CustomerRepository extends BaseRepository
         $customer = current($customers);
         return $customer;
     }
+
+    // save
+    function save()
+    {
+
+    }
 }

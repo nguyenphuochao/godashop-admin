@@ -30,6 +30,11 @@ class StaffRepository extends BaseRepository
         return $staffs;
     }
 
+    function getAll()
+    {
+        return $this->fetAll();
+    }
+
     function find($id)
     {
         $condition = "id = $id";

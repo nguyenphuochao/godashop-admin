@@ -101,6 +101,55 @@ class OrderRepository extends BaseRepository
         return $order;
     }
 
+    function save($data)
+    {
+        global $conn;
+        $created_date = $data["created_date"];
+        $order_status_id  = $data["order_status_id"];
+        $staff_id  = $data["staff_id"];
+        $customer_id  = $data["customer_id"];
+        $shipping_fullname = $data["shipping_fullname"];
+        $shipping_mobile = $data["shipping_mobile"];
+        $payment_method = $data["payment_method"];
+        $shipping_ward_id  = $data["shipping_ward_id"];
+        $shipping_housenumber_street = $data["shipping_housenumber_street"];
+        $shipping_fee = $data["shipping_fee"];
+        $delivered_date = $data["delivered_date"];
+
+        $sql = "INSERT INTO `order`(
+                created_date,
+                order_status_id,
+                staff_id,
+                customer_id,
+                shipping_fullname,
+                shipping_mobile,
+                payment_method,
+                shipping_ward_id,
+                shipping_housenumber_street,
+                shipping_fee,
+                delivered_date
+                )
+                VALUES(
+                '$created_date',
+                $order_status_id,
+                $staff_id,
+                $customer_id,
+                '$shipping_fullname',
+                '$shipping_mobile',
+                '$payment_method',
+                '$shipping_ward_id',
+                '$shipping_housenumber_street',
+                '$shipping_fee',
+                '$delivered_date'
+                )";
+            if($conn->query($sql) === TRUE) {
+                return true;
+            }
+            $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+            return false;
+
+    }
+
     function delete(Order $order)
     {
         global $conn;
@@ -115,10 +164,8 @@ class OrderRepository extends BaseRepository
     {
         global $conn;
         $id = $order->getID();
-        $created_date = $order->getCreatedDate();
         $order_status_id = $order->getOrderStatusID();
         $staff_id = $order->getStaffID();
-        $customer_id = $order->getCustomerID();
         $shipping_fullname = $order->getShippingFullname();
         $shipping_mobile = $order->getShippingMobile();
         $payment_method = $order->getPaymentMethod();
@@ -128,10 +175,8 @@ class OrderRepository extends BaseRepository
         $delivered_date = $order->getDeliveredDate();
 
         $sql = "UPDATE `order` SET 
-                        created_date = '$created_date',
                         order_status_id = $order_status_id,
                         staff_id = $staff_id,
-                        customer_id = $customer_id,
                         shipping_fullname = '$shipping_fullname',
                         shipping_mobile = '$shipping_mobile',
                         payment_method = '$payment_method',

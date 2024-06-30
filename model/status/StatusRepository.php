@@ -19,6 +19,11 @@ class StatusRepository extends BaseRepository
         return $statuses;
     }
 
+    function getAll()
+    {
+        return $this->fetchAll();
+    }
+
     function find($id)
     {
         $condition = "id = $id";
