@@ -56,7 +56,7 @@
  <!-- Demo scripts for this page-->
  <script src="../public/js/demo/datatables-demo.js"></script>
  <script src="../public/js/admin.js"></script>
- <script src="../public/js/script.js"></script>
+ <script src="../public/vendor/format/number_format.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
  </body>
 

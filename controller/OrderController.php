@@ -148,7 +148,7 @@ class OrderController
     function ajaxGetShippingFee()
     {
         $province_id = $_GET["province_id"];
-        $subtotal = $_GET["subtotal"];
+        $subtotal = $_GET["subtotal"] ?? 0;
         $transportRepository = new TransportRepository();
         $transport = $transportRepository->findByProvinceID($province_id);
         $shipping_fee = $transport->getPrice();

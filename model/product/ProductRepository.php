@@ -94,8 +94,15 @@ class ProductRepository extends BaseRepository
 
     function find($id)
     {
-        global $conn;
         $condition = "id = $id";
+        $products = $this->fetchAll($condition);
+        $product = current($products);
+        return $product;
+    }
+
+    function findByBarCode($barcode)
+    {
+        $condition = "barcode = '$barcode'";
         $products = $this->fetchAll($condition);
         $product = current($products);
         return $product;

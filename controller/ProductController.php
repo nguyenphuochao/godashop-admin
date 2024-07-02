@@ -146,4 +146,26 @@ class ProductController
         }
         echo "Bạn không thể xóa sản phẩm đang tồn tại danh mục";
     }
+
+    function findBarCode()
+    {
+        $barcode = $_GET["barcode"];
+        $productRepository = new ProductRepository();
+        $product = $productRepository->findByBarCode($barcode);
+        if (!$product) {
+            return false;
+        }
+        $data = [
+            "id" => $product->getID(),
+            "barcode" => $product->getBarCode(),
+            "feature_image" => $product->getFeaturedImage(),
+            "name" => $product->getName(),
+            "price" => $product->getPrice(),
+            "sale_price" => $product->getSalePrice(),
+            "discount_percentage" => $product->getDiscountPercentage(),
+
+        ];
+        // trả về json cho trình duyệt
+        echo json_encode($data);
+    }
 }

@@ -98,20 +98,20 @@
                         <div class="col-sm-4">
                             <select name="ward" class="form-control ward">
                                 <option value="">Phường / xã</option>
-                                <?php foreach($wards as $ward) : ?>
-                                    <option value="<?=$ward->getID() ?>"><?=$ward->getName() ?></option>
+                                <?php foreach ($wards as $ward) : ?>
+                                    <option value="<?= $ward->getID() ?>"><?= $ward->getName() ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <!-- shipping_housenumber_street -->
-                         <div class="col-sm-12 mt-2">
+                        <div class="col-sm-12 mt-2">
                             <input type="text" name="shipping_housenumber_street" class="form-control">
-                         </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
-
+            <!-- delivered_date -->
             <div class="row">
                 <div class="col-sm-4 col-lg-2 ">
                     <label>Ngày giao hàng</label>
@@ -121,6 +121,7 @@
                 </div>
             </div>
 
+            <!-- staff_id  -->
             <div class="row">
                 <div class="col-sm-4 col-lg-2 ">
                     <label>Nhân viên phụ trách</label>
@@ -134,8 +135,73 @@
                 </div>
             </div>
 
+            <!-- Subtotal -->
+            <div class="row">
+                <div class="col-sm-4 col-lg-2 ">
+                    <label>Tạm tính:</label>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <span class="sub-total">đ</span>
+                </div>
+            </div>
+
+            <!-- Shipping_fee -->
+            <div class="row">
+                <div class="col-sm-4 col-lg-2 ">
+                    <label>Phí giao hàng:</label>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <input name="shipping_fee" class="shipping-fee form-control" type="number" value="" required>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="row">
+                <div class="col-sm-4 col-lg-2 ">
+                    <label>Tổng cộng:</label>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <span class="payment-total">đ</span>
+                </div>
+            </div>
+            <!-- Search Product -->
+            <label class="control-label">Sản phẩm</label>
+            <div class="row">
+                <div class="col-sm-4 col-lg-2 ">
+                    <label for="search-barcode">Nhập barcode: </label>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <input type="number" name="search-barcode" id="search-barcode" class="form-control">
+                </div>
+            </div>
+            <!-- Table Product -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover product-item" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
             <div class="form-action">
                 <input type="submit" class="btn btn-primary btn-sm" value="Lưu" name="save">
+                <a href="index.php?c=order" class="btn btn-warning btn-sm">Hủy</a>  
             </div>
             <br>
         </form>
@@ -145,40 +211,60 @@
         <!-- /.row -->
     </div>
 
-<?php require "layout/footer.php"; ?>
+    <?php require "layout/footer.php"; ?>
 
-<script>
-    $(function(){
-        // ajax district
-        $(".district").find('option').not(':first').remove();
-        $(".province").change(function(){
-            var province_id = $(this).val();
-            $.ajax({
-                type: "GET",
-                url: "index.php?c=order&a=ajaxGetDistrict",
-                data: {
-                    province_id : province_id
-                },
-                success: function (response) {
-                   $(".district").html(response);
-                }
+    <script>
+        $(function() {
+            // ajax district
+            $(".district").find('option').not(':first').remove();
+            $(".province").change(function() {
+                var province_id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "index.php?c=order&a=ajaxGetDistrict",
+                    data: {
+                        province_id: province_id
+                    },
+                    success: function(response) {
+                        $(".district").html(response);
+                    }
+                });
             });
-        });
 
-        // ajax ward
-        $(".ward").find('option').not(':first').remove();
-        $(".district").change(function(){
-            var district_id = $(this).val();
-            $.ajax({
-                type: "GET",
-                url: "index.php?c=order&a=ajaxGetWard",
-                data: {
-                    district_id : district_id
-                },
-                success: function (response) {
-                   $(".ward").html(response);
-                }
+            // ajax ward
+            $(".ward").find('option').not(':first').remove();
+            $(".district").change(function() {
+                var district_id = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "index.php?c=order&a=ajaxGetWard",
+                    data: {
+                        district_id: district_id
+                    },
+                    success: function(response) {
+                        $(".ward").html(response);
+                    }
+                });
             });
+
+            // ajax shipping_fee
+            $(".province").change(function() {
+                var province_id = $(this).val();
+                var subtotal = $(".sub-total").attr("data");
+                $.ajax({
+                    type: "GET",
+                    url: "index.php?c=order&a=ajaxGetShippingFee",
+                    data: {
+                        province_id: province_id,
+                        subtotal : subtotal
+                    },
+                    success: function(response) {
+                        var data = JSON.parse(response);
+                        var shipping_fee = data.shipping_fee;
+                        updateShippingFee(shipping_fee);
+                    }
+                });
+            });
+
         });
-    });
-</script>
+    </script>
