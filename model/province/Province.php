@@ -25,4 +25,23 @@ class Province
     {
         return $this->type;
     }
+
+    // -------------- Relationship
+
+    // HasMany District
+    function getDistricts()
+    {
+        $districtRepository = new DistrictRepository();
+        $districts = $districtRepository->findProvince($this->id);
+        return $districts;
+    }
+
+    // BelongsTo transport
+    function getShippingFee()
+    {
+        $transportRepository = new TransportRepository();
+        $transport = $transportRepository->findByProvinceID($this->id);
+        $shipping_fee = $transport->getPrice();
+        return $shipping_fee;
+    }
 }

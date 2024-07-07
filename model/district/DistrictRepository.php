@@ -1,12 +1,15 @@
 <?php
 class DistrictRepository extends BaseRepository
 {
-    protected function fetchAll($condition = null)
+    protected function fetchAll($condition = null, $order = null)
     {
         global $conn;
         $sql = "SELECT * FROM district";
         if ($condition) {
             $sql .= " WHERE $condition";
+        }
+        if ($order) {
+            $sql .= " ORDER BY $order";
         }
         $result = $conn->query($sql);
         $districts = [];
@@ -40,7 +43,7 @@ class DistrictRepository extends BaseRepository
     function findProvince($provice_id)
     {
         $condition = "province_id = $provice_id";
-        $districts = $this->fetchAll($condition);
+        $districts = $this->fetchAll($condition, "name ASC");
         return $districts;
     }
 }

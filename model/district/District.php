@@ -32,12 +32,20 @@ class District
         return $this->province_id;
     }
 
-    // ------ RelationShop
+    // ------ RelationShip ------
+
     // BelongsTo province
     function getProvince()
     {
         $provinceRepository = new ProvinceRepository();
         $province = $provinceRepository->find($this->province_id);
         return $province;
+    }
+    // HasMany ward
+    function getWards()
+    {
+        $wardRepository = new WardRepository();
+        $wards = $wardRepository->findDistrict($this->id);
+        return $wards;
     }
 }

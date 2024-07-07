@@ -128,4 +128,14 @@ class Customer
         $this->is_active = $is_active;
         return $this;
     }
+
+    // ------------ Relationship
+
+    // belongsTo ward
+    function getWard()
+    {
+        $wardRepository = new WardRepository();
+        $ward = $wardRepository->find($this->ward_id);
+        return $ward;
+    }
 }

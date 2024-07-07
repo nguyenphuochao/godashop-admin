@@ -1,5 +1,104 @@
-
+// load jquery sau khi tải xong trang html
 $(function () {
+
+	// thay đổi province(tỉnh/thành phố)
+	$("#content-wrapper .province").change(function (event) {
+		var province_id = $(this).val();
+		if (!province_id) {
+			updateSelectBox(null, "#content-wrapper .district");
+			updateSelectBox(null, "#content-wrapper .ward");
+		}
+		$.ajax({
+			type: "GET",
+			url: "index.php?c=address&a=getDistricts",
+			data: {
+				province_id: province_id
+			}
+		})
+			.done(function (data) {
+				updateSelectBox(data, "#content-wrapper .district");
+				updateSelectBox(null, "#content-wrapper .ward");
+			})
+		// update lun cái shipping fee tương ứng với tỉnh/thành phố
+		if ($("#content-wrapper .shipping-fee").length) {
+			$.ajax({
+				type: "GET",
+				url: "index.php?c=address&a=getShippingFee",
+				data: {
+					province_id: province_id
+				}
+			})
+				.done(function (data) {
+					// update shipping fee and total on UI
+					var shipping_fee = data;
+					updateShippingFee(shipping_fee);
+				});
+		}
+	});
+
+	// thay đổi quận/ huyện
+	$("#content-wrapper .district").change(function (event) {
+		var district_id = $(this).val();
+		if (!district_id) {
+			updateSelectBox(null, "#content-wrapper .ward");
+			return;
+		}
+		$.ajax({
+			type: "GET",
+			url: "index.php?c=address&a=getWards",
+			data: {
+				district_id: district_id
+			}
+		})
+			.done(function (data) {
+				updateSelectBox(data, "#content-wrapper .ward");
+			});
+	});
+
+	// thay đổi customer
+	$(".chosen-customer").change(function (event) {
+		$(".shipping-name").val('');
+		$(".shipping-phone").val('');
+		updateSelectBox(null, ".province");
+		updateSelectBox(null, ".district");
+		updateSelectBox(null, ".ward");
+		$(".hoursenmber-street").val('');
+		var customer_id = $(this).val();
+		// nếu chọn khách hàng mới thì dừng tiến trình
+		if (!customer_id) {
+			updateShippingFee(0);
+			return;
+		}
+		// thực hiện ajax lấy thông tin khách hàng
+		$.ajax({
+			url: "index.php?c=order&a=ajaxGetShippingInfoDefault",
+			data: {
+				customer_id: customer_id
+			}
+		})
+			.done(function (data) {
+				data = JSON.parse(data);
+				$(".shipping-name").val(data.shipping_name);
+				$(".shipping-phone").val(data.shipping_phone);
+
+				updateSelectBox(JSON.stringify(data.provinces), ".province", data.selected_province_id);
+				updateSelectBox(JSON.stringify(data.districts), ".district", data.selected_district_id);
+				updateSelectBox(JSON.stringify(data.wards), ".ward", data.selected_ward_id);
+				$(".housenumber_street").val(data.housenumber_street);
+
+				if (data.selected_province_id) {
+					updateShippingFeeAjax(data.selected_province_id);
+				}
+			})
+			.fail(function () {
+				console.log("error");
+			});
+	});
+
+
+
+
+
 	// ngăn chặn sự kiện enter
 	$("#search-barcode").keydown(function (event) {
 		if (event.keyCode == 13) {
@@ -83,11 +182,29 @@ $(function () {
 	});
 });
 
+// -------------các hàm xử lí----------------
+
 function checkAll(check_all) {
 	$(check_all).change(function () {
 		var checkboxes = $(this).closest('table').find(':checkbox');
 		checkboxes.prop('checked', $(this).is(':checked'));
 	});
+}
+
+// hàm update select box
+function updateSelectBox(data, selector, selected_id = null) {
+	var items = JSON.parse(data);
+	$(selector).find("option").not(':first').remove(); // xóa hết option trừ option đầu tiên
+	if (!data) return;
+	for (let i = 0; i < items.length; i++) {
+		let item = items[i];
+		selected = '';
+		if (selected_id == item.id) {
+			selected = 'selected';
+		}
+		let option = '<option ' + selected + ' value="' + item.id + '">' + item.name + '</option>';
+		$(selector).append(option);
+	}
 }
 
 function updateSubTotal() {
@@ -127,24 +244,24 @@ function deleteRow(self) {
 	updatePaymentTotal();
 }
 
-function updateShippingFee(shipping_fee){
+function updateShippingFee(shipping_fee) {
 	shipping_fee = Number(shipping_fee);
 	$("input[name=shipping_fee]").val(shipping_fee);
 	updatePaymentTotal();
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
+	var sPageURL = window.location.search.substring(1),
+		sURLVariables = sPageURL.split('&'),
+		sParameterName,
+		i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
 
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
+		if (sParameterName[0] === sParam) {
+			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+		}
+	}
 };
 

@@ -32,6 +32,7 @@ class OrderController
         header("location:index.php?c=order&a=index");
     }
 
+    // trang thêm đơn hàng
     function add()
     {
         $customerRepository = new CustomerRepository();
@@ -46,37 +47,31 @@ class OrderController
         $provinceRepository = new ProvinceRepository();
         $provinces = $provinceRepository->getAll();
 
-        $districtRepository = new DistrictRepository();
-        $districts = $districtRepository->getAll();
-
-        $wardRepository = new WardRepository();
-        $wards = $wardRepository->getAll();
-
         require "view/order/add.php";
     }
 
-    function ajaxGetDistrict()
+    // lấy thông tin khách hàng từ ward_id
+    function ajaxGetShippingInfoDefault()
     {
-        $province_id = $_GET["province_id"];
-        $districtRepository = new DistrictRepository();
-        $districts = $districtRepository->findProvince($province_id);
-        echo '<option value = "">' . 'Quận / huyện' . '</option>';
-        foreach ($districts as $district) {
-            echo '<option value = "' . $district->getID() . '">' . $district->getName() . '</option>';
+        $customer_id = $_GET["customer_id"];
+        $customerRepository = new CustomerRepository();
+        $customer = $customerRepository->find($customer_id);
+
+        $provinceRepository = new ProvinceRepository();
+        $provinces = $provinceRepository->getAll();
+        $data = [];
+        $data["shipping_name"] = $customer->getShippingName();
+        $data["shipping_mobile"] = $customer->getShippingMobile();
+        $data["housenumber_street"] = $customer->getHousenumberStreet();
+        $data["provinces"] = [];
+        $data["districts"] = [];
+        $data["wards"] = [];
+        if (!empty($customer->getWardID())) {
+           
         }
     }
 
-    function ajaxGetWard()
-    {
-        $district_id = $_GET["district_id"];
-        $wardRepository = new WardRepository();
-        $wards = $wardRepository->findDistrict($district_id);
-        echo '<option value = "">' . 'Phưởng / xã' . '</option>';
-        foreach ($wards as $ward) {
-            echo '<option value = "' . $ward->getID() . '">' . $ward->getName() . '</option>';
-        }
-    }
-
+    // lưu đơn hàng
     function store()
     {
         $transportRepository = new TransportRepository();

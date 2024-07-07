@@ -17,7 +17,7 @@
                     <label>Tên khách hàng:</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
-                    <select class="form-control" name="customer_id" required>
+                    <select class="form-control chosen-customer" name="customer_id" required>
                         <option value="">Chọn khách hàng</option>
                         <?php foreach ($customers as $customer) : ?>
                             <option value="<?= $customer->getID() ?>"><?= $customer->getName(); ?></option>
@@ -33,7 +33,7 @@
                 <div class="col-sm-8 col-lg-6">
                     <select name="order_status_id" class="form-control">
                         <?php foreach ($statuses as $status) : ?>
-                            <option <?= $status->getID() == 1 ? 'selected' : '' ?> value="<?= $status->getID() ?>">
+                            <option <?= $status->getID() == 5 ? 'selected' : '' ?> value="<?= $status->getID() ?>">
                                 <?= $status->getDescription(); ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -45,7 +45,7 @@
                     <label>Người nhận</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
-                    <input type="text" name="shipping_fullname" class="form-control">
+                    <input type="text" name="shipping_fullname" class="form-control shipping-name">
                 </div>
             </div>
             <!-- shipping_mobile -->
@@ -54,7 +54,7 @@
                     <label>Số điện thoại người nhận</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
-                    <input type="text" name="shipping_mobile" class="form-control">
+                    <input type="text" name="shipping_mobile" class="form-control shipping-name">
                 </div>
             </div>
             <!-- payment_method -->
@@ -75,13 +75,39 @@
                     <label>Địa chỉ giao hàng</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
+                    <?php
+                    $customer_shipping_name = '';
+                    $customer_shipping_mobile = '';
+                    $customer_province_id = '';
+                    $customer_district_id = '';
+                    $customer_ward_id = '';
+                    $districts = array(); // set default districts để tránh bị undifined
+                    $wards = array(); // set default wards để tránh bị undifined
+                    // trường hợp nếu chọn khách hàng đã có ward_id
+                    // if (!empty($customer)) {
+                    //     $customer_shipping_name = $customer->getShippingName();
+                    //     $customer_shipping_mobile = $customer->getShippingMobile();
+                    //     $customer_ward = $customer->getWard();
+                    //     if (!empty($customer_ward)) {
+                    //         $customer_district = $customer_ward->getDistrict(); // lấy dc quận/huyện
+                    //         $customer_province = $customer_district->getProvince(); // lấy dc tỉnh/thành phố
+                    //         $districts = $customer_province->getDistricts(); // từ tỉnh lấy danh sách quận/huyện
+                    //         $wards = $customer_district->getWards(); // từ quận lấy danh sách phường/xã
+
+                    //         $customer_province_id = $customer_province->getID();
+                    //         $customer_district_id = $customer_district->getID();
+                    //         $customer_ward_id = $customer_ward->getID();
+                    //     }
+                    // }
+                    ?>
                     <div class="row">
                         <!-- Province -->
                         <div class="col-sm-4">
                             <select name="province" class="form-control province">
                                 <option value="">Tỉnh / thành phố</option>
                                 <?php foreach ($provinces as $province) : ?>
-                                    <option value="<?= $province->getID() ?>"><?= $province->getName(); ?></option>
+                                    <option <?= $customer_province_id == $province->getID() ? "selected" : "" ?>
+                                    value="<?= $province->getID() ?>"><?= $province->getName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -90,7 +116,8 @@
                             <select name="district" class="form-control district" required>
                                 <option value="">Quận / huyện</option>
                                 <?php foreach ($districts as $district) : ?>
-                                    <option value="<?= $district->getID() ?>"><?= $district->getName() ?></option>
+                                    <option <?= $customer_district_id == $district->getID() ? "selected" : "" ?> 
+                                    value="<?= $district->getID() ?>"><?= $district->getName() ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -99,13 +126,14 @@
                             <select name="ward" class="form-control ward">
                                 <option value="">Phường / xã</option>
                                 <?php foreach ($wards as $ward) : ?>
-                                    <option value="<?= $ward->getID() ?>"><?= $ward->getName() ?></option>
+                                    <option <?= $customer_ward_id == $ward->getID() ? "selected" : "" ?>  
+                                    value="<?= $ward->getID() ?>"><?= $ward->getName() ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <!-- shipping_housenumber_street -->
                         <div class="col-sm-12 mt-2">
-                            <input type="text" name="shipping_housenumber_street" class="form-control">
+                            <input type="text" name="shipping_housenumber_street" class="form-control hoursenmber-street">
                         </div>
                     </div>
                 </div>
@@ -201,7 +229,7 @@
             <!-- Submit -->
             <div class="form-action">
                 <input type="submit" class="btn btn-primary btn-sm" value="Lưu" name="save">
-                <a href="index.php?c=order" class="btn btn-warning btn-sm">Hủy</a>  
+                <a href="index.php?c=order" class="btn btn-warning btn-sm">Hủy</a>
             </div>
             <br>
         </form>
@@ -212,59 +240,3 @@
     </div>
 
     <?php require "layout/footer.php"; ?>
-
-    <script>
-        $(function() {
-            // ajax district
-            $(".district").find('option').not(':first').remove();
-            $(".province").change(function() {
-                var province_id = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "index.php?c=order&a=ajaxGetDistrict",
-                    data: {
-                        province_id: province_id
-                    },
-                    success: function(response) {
-                        $(".district").html(response);
-                    }
-                });
-            });
-
-            // ajax ward
-            $(".ward").find('option').not(':first').remove();
-            $(".district").change(function() {
-                var district_id = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "index.php?c=order&a=ajaxGetWard",
-                    data: {
-                        district_id: district_id
-                    },
-                    success: function(response) {
-                        $(".ward").html(response);
-                    }
-                });
-            });
-
-            // ajax shipping_fee
-            $(".province").change(function() {
-                var province_id = $(this).val();
-                var subtotal = $(".sub-total").attr("data");
-                $.ajax({
-                    type: "GET",
-                    url: "index.php?c=order&a=ajaxGetShippingFee",
-                    data: {
-                        province_id: province_id,
-                        subtotal : subtotal
-                    },
-                    success: function(response) {
-                        var data = JSON.parse(response);
-                        var shipping_fee = data.shipping_fee;
-                        updateShippingFee(shipping_fee);
-                    }
-                });
-            });
-
-        });
-    </script>
