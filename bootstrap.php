@@ -36,3 +36,6 @@ require "model/ward/WardRepository.php";
 
 require "model/transport/Transport.php";
 require "model/transport/TransportRepository.php";
+
+require "model/comment/Comment.php";
+require "model/comment/CommentRepository.php";

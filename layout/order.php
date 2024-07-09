@@ -38,21 +38,20 @@
                 <td><?= number_format($order->getSubTotal()); ?> đ</td>
                 <td><?= number_format($order->getSubTotal() + $order->getShippingFee()); ?> đ</td>
                 <td>
-                    <?=$order->getShippingHousenumberStreet(); ?>,
-                    <?=$order->getWard()->getName(); ?>, 
-                    <?=$order->getWard()->getDistrict()->getName(); ?>, 
-                    <?=$order->getWard()->getDistrict()->getProvince()->getName(); ?>
+                    <?= $order->getShippingHousenumberStreet(); ?>,
+                    <?= $order->getWard()->getName(); ?>,
+                    <?= $order->getWard()->getDistrict()->getName(); ?>,
+                    <?= $order->getWard()->getDistrict()->getProvince()->getName(); ?>
                 </td>
                 <td><?= $order->getStaff() ? $order->getStaff()->getName() : '' ?></td>
                 <td>
                     <?php if ($order->getOrderStatusID() == 1) : ?>
-                        <a href="index.php?c=order&a=confirm&id=<?= $order->getID() ?>" onclick="return confirm('Bạn muốn xác nhận đơn hàng phải không?')" 
-                        class="btn btn-primary btn-sm">Xác nhận</a>
+                        <a href="index.php?c=order&a=confirm&id=<?= $order->getID() ?>" onclick="return confirm('Bạn muốn xác nhận đơn hàng phải không?')" class="btn btn-primary btn-sm">Xác nhận</a>
                     <?php endif; ?>
                 </td>
-                <td><a href="index.php?c=order&a=detail&id=<?=$order->getID()?>" class="btn btn-success btn-sm">Xem chi tiết</a></td>
-                <td><a href="index.php?c=order&a=edit&id=<?=$order->getID()?>" class="btn btn-warning btn-sm">Sửa</a></td>
-                <td><a href="#" class="btn btn-danger btn-sm">Xóa</a></td>
+                <td><a href="index.php?c=order&a=detail&id=<?= $order->getID() ?>" class="btn btn-success btn-sm">Xem chi tiết</a></td>
+                <td><a href="index.php?c=order&a=edit&id=<?= $order->getID() ?>" class="btn btn-warning btn-sm">Sửa</a></td>
+                <td><a href="index.php?c=order&a=delete&id=<?= $order->getID() ?>" onclick="return confirm('Bạn muốn xóa đơn hàng này hả?')" class="btn btn-danger btn-sm">Xóa</a></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

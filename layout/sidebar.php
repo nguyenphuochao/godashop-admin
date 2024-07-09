@@ -21,8 +21,8 @@
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-comments"></i> <span>Comment</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/comment/list.html">Danh sách</a>
+        <div class="dropdown-menu <?= $c == 'comment' ? 'show' : '' ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'comment' ? 'active' : '' ?>" href="index.php?c=comment">Danh sách</a>
         </div>
     </li>
 

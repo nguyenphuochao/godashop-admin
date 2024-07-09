@@ -142,22 +142,35 @@ class OrderRepository extends BaseRepository
                 '$shipping_fee',
                 '$delivered_date'
                 )";
-            if($conn->query($sql) === TRUE) {
-                return true;
-            }
-            $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
-            return false;
-
+        if ($conn->query($sql) === TRUE) {
+            $last_id = $conn->insert_id;
+            return $last_id;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
     }
 
     function delete(Order $order)
     {
         global $conn;
+        // xóa orderItem
+        $orderItemRepository = new OrderItemRepository();
+        $orderItems = $order->getOrderItem();
+        foreach ($orderItems as $orderItem) {
+            if(!$orderItemRepository->delete($orderItem)){
+                echo "Error: " . $sql . PHP_EOL . $conn->error;
+                return false;
+            }
+        }
+
+        // xóa order
         $id = $order->getID();
         $sql = "DELETE FROM `order` WHERE id = $id";
         if ($conn->query($sql) === TRUE) {
             return true;
         }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
     }
 
     function update(Order $order)

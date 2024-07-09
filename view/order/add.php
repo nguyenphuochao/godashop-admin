@@ -54,7 +54,7 @@
                     <label>Số điện thoại người nhận</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
-                    <input type="text" name="shipping_mobile" class="form-control shipping-name">
+                    <input type="text" name="shipping_mobile" class="form-control shipping-mobile">
                 </div>
             </div>
             <!-- payment_method -->
@@ -133,7 +133,7 @@
                         </div>
                         <!-- shipping_housenumber_street -->
                         <div class="col-sm-12 mt-2">
-                            <input type="text" name="shipping_housenumber_street" class="form-control hoursenmber-street">
+                            <input type="text" name="shipping_housenumber_street" class="form-control housenumber-street">
                         </div>
                     </div>
                 </div>

@@ -58,7 +58,7 @@ $(function () {
 	// thay đổi customer
 	$(".chosen-customer").change(function (event) {
 		$(".shipping-name").val('');
-		$(".shipping-phone").val('');
+		$(".shipping-mobile").val('');
 		updateSelectBox(null, ".province");
 		updateSelectBox(null, ".district");
 		updateSelectBox(null, ".ward");
@@ -79,12 +79,12 @@ $(function () {
 			.done(function (data) {
 				data = JSON.parse(data);
 				$(".shipping-name").val(data.shipping_name);
-				$(".shipping-phone").val(data.shipping_phone);
+				$(".shipping-mobile").val(data.shipping_mobile);
 
 				updateSelectBox(JSON.stringify(data.provinces), ".province", data.selected_province_id);
 				updateSelectBox(JSON.stringify(data.districts), ".district", data.selected_district_id);
 				updateSelectBox(JSON.stringify(data.wards), ".ward", data.selected_ward_id);
-				$(".housenumber_street").val(data.housenumber_street);
+				$(".housenumber-street").val(data.housenumber_street);
 
 				if (data.selected_province_id) {
 					updateShippingFeeAjax(data.selected_province_id);
@@ -248,6 +248,21 @@ function updateShippingFee(shipping_fee) {
 	shipping_fee = Number(shipping_fee);
 	$("input[name=shipping_fee]").val(shipping_fee);
 	updatePaymentTotal();
+}
+
+function updateShippingFeeAjax(province_id) {
+	$.ajax({
+		url: 'index.php?c=address&a=getShippingFee',
+		data: { province_id: province_id },
+	})
+		.done(function (data) {
+			var shipping_fee = data;
+			updateShippingFee(shipping_fee);
+		})
+		.fail(function () {
+			console.log("error");
+		});
+
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {

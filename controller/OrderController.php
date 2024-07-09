@@ -67,16 +67,35 @@ class OrderController
         $data["districts"] = [];
         $data["wards"] = [];
         if (!empty($customer->getWardID())) {
-           
+            $data["selected_ward_id"] = $customer->getWardID();
+
+            $ward = $customer->getWard();
+            $data["selected_district_id"] = $ward->getDistrictID();
+
+            $district = $ward->getDistrict();
+            $data["selected_province_id"] = $district->getProvinceID();
+
+            $province = $district->getProvince();
+
+            $wards = $district->getWards();
+            foreach ($wards as $w) {
+                $data["wards"][] = ["id" => $w->getID(), "name" => $w->getName()];
+            }
+
+            $districts = $province->getDistricts();
+            foreach ($districts as $d) {
+                $data["districts"][] = ["id" => $d->getId(), "name" => $d->getName()];
+            }
         }
+        foreach ($provinces as $p) {
+            $data["provinces"][] = ["id" => $p->getId(), "name" => $p->getName()];
+        }
+        echo json_encode($data);
     }
 
     // lưu đơn hàng
     function store()
     {
-        $transportRepository = new TransportRepository();
-        $transport = $transportRepository->findByProvinceID($_POST["province"]);
-
         $data = [];
         $data["created_date"] = date("Y-m-d H:i:s");
         $data["order_status_id"] = $_POST["order_status_id"];
@@ -87,23 +106,59 @@ class OrderController
         $data["payment_method"] = $_POST["payment_method"];
         $data["shipping_ward_id"] = $_POST["ward"];
         $data["shipping_housenumber_street"] = $_POST["shipping_housenumber_street"];
-        $data["shipping_fee"] = $transport->getPrice();
+        $data["shipping_fee"] = $_POST["shipping_fee"];
         $data["delivered_date"] = $_POST["delivered_date"];
         $orderRepository = new OrderRepository();
-        if ($orderRepository->save($data)) {
+        $productRepository = new ProductRepository();
+
+        if ($order_id = $orderRepository->save($data)) {
+            $product_ids = $_POST["product_id"];
+            $qties = $_POST["qties"];
+
+            // save orderDetail
+            $orderItemRepository = new OrderItemRepository();
+            for ($i = 0; $i <= count($product_ids) - 1; $i++) {
+                $orderItems = array();
+                $orderItems["product_id"] = $product_ids[$i];
+                $orderItems["order_id"] = $order_id;
+                $orderItems["qty"] = $qties[$i];
+
+                $product = $productRepository->find($product_ids[$i]);
+                $orderItems["unit_price"] = $product->getSalePrice();
+                $orderItems["total_price"] = $qties[$i] * $product->getSalePrice();
+
+                if (!$orderItemRepository->save($orderItems)) {
+                    $_SESSION["error"] = $orderRepository->getError();
+                    exit();
+                }
+            }
             $_SESSION["success"] = "Thêm mới đơn hàng thành công";
-        } else {
-            $_SESSION["error"] = $orderRepository->getError();
+            header("Location: index.php?c=order");
         }
-        header("Location: index.php?c=order");
     }
 
+    // chi tiết đơn hàng
     function detail()
     {
         $id = $_GET["id"];
         $orderRepository = new OrderRepository();
         $order = $orderRepository->find($id);
         require "view/order/detail.php";
+    }
+
+    // xóa đơn hàng
+    function delete()
+    {
+        $order_id = $_GET["id"];
+        $orderRepository = new OrderRepository();
+        $order = $orderRepository->find($order_id);
+        if ($orderRepository->delete($order)) {
+            $_SESSION["success"] = "Xóa đơn hàng thành công";
+        } else {
+            $_SESSION["error"] = $orderRepository->getError();
+        }
+
+        header("Location: index.php?c=order");
     }
 
     function edit()
@@ -138,21 +193,6 @@ class OrderController
         }
 
         require "view/order/edit.php";
-    }
-
-    function ajaxGetShippingFee()
-    {
-        $province_id = $_GET["province_id"];
-        $subtotal = $_GET["subtotal"] ?? 0;
-        $transportRepository = new TransportRepository();
-        $transport = $transportRepository->findByProvinceID($province_id);
-        $shipping_fee = $transport->getPrice();
-        $total = number_format($shipping_fee + $subtotal);
-        $data = [
-            "shipping_fee" => $shipping_fee,
-            "total" => $total
-        ];
-        echo json_encode($data);
     }
 
     function update()
@@ -205,7 +245,5 @@ class OrderController
         }
     }
 
-    function delete()
-    {
-    }
+   
 }

@@ -35,7 +35,8 @@ class OrderItemRepository extends BaseRepository
         return $order_items;
     }
 
-    function find($product_id, $order_id){
+    function find($product_id, $order_id)
+    {
         $condition = "product_id = $product_id AND order_id = $order_id";
         $order_items = $this->fetchAll($condition);
         $order_item = current($order_items);
@@ -50,7 +51,7 @@ class OrderItemRepository extends BaseRepository
         $qty = $data["qty"];
         $unit_price = $data["unit_price"];
         $total_price = $data["total_price"];
-        $sql = "INSERT INTO order_item(
+        $sql = "INSERT INTO order_item (
             product_id,
             order_id,
             qty,
@@ -86,6 +87,18 @@ class OrderItemRepository extends BaseRepository
                         total_price = $total_price
                         WHERE order_id = $order_id AND product_id = $product_id";
         if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
+    function delete(OrderItem $order_item){
+        global $conn;
+        $order_id = $order_item->getOrderID();
+        $product_id = $order_item->getProductID();
+        $sql = "DELETE FROM `order_item` WHERE order_id = $order_id AND product_id = $product_id";
+        if($conn->query($sql) === TRUE){
             return true;
         }
         $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
