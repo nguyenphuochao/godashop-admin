@@ -15,7 +15,6 @@
 		</div>
 		<div class="card mb-3">
 			<div class="card-body">
-				<?= messageStatus(); ?>
 				<div class="table-responsive">
 					<?php require "layout/order.php"; ?>
 				</div>

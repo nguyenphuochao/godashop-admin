@@ -58,4 +58,33 @@ class StaffRepository extends BaseRepository
         $staff = current($staffs);
         return $staff;
     }
+
+    function update($staff)
+    {
+        global $conn;
+        $id = $staff->getID();
+        $role_id = $staff->getRoleID();
+        $name = $staff->getName();
+        $mobile = $staff->getMobile();
+        $username = $staff->getUsername();
+        $password = $staff->getPassword();
+        $email = $staff->getEmail();
+        $is_active = $staff->getIsActive();
+        
+        $sql = "UPDATE staff SET 
+                role_id = $role_id,
+                name = '$name',
+                mobile = '$mobile',
+                username = '$username',
+                password = '$password',
+                email = '$email',
+                is_active = '$is_active'
+                WHERE id = $id";
+
+        if ($conn->query($sql)) {
+            return true;
+        }
+        $this->error =  "Error:" . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
 }

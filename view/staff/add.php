@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <title>Danh mục</title>
-      <!-- Create favicon -->
-      <link rel="shortcut icon" type="image/x-icon" href="../../images/logo.jpg" />
-      <!-- Custom fonts for this template-->
-      <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-      <!-- Page level plugin CSS-->
-      <link href="../../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-      <!-- Custom styles for this template-->
-      <link href="../../css/sb-admin.css" rel="stylesheet">
-      <link href="../../css/admin.css" rel="stylesheet">
-   </head>
-   <body id="page-top">
-      <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-         <a class="navbar-brand mr-1" href="index.html">Mỹ Phẩm YouT</a>
-         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <title>Nhân viên</title>
+   <!-- Create favicon -->
+   <link rel="shortcut icon" type="image/x-icon" href="../../images/logo.jpg" />
+   <!-- Custom fonts for this template-->
+   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <!-- Page level plugin CSS-->
+   <link href="../../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+   <!-- Custom styles for this template-->
+   <link href="../../css/sb-admin.css" rel="stylesheet">
+   <link href="../../css/admin.css" rel="stylesheet">
+</head>
+<body id="page-top">
+   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+      <a class="navbar-brand mr-1" href="index.html">Mỹ Phẩm YouT</a>
+      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
          <i class="fas fa-bars"></i>
-         </button>
-         <!-- Navbar Search -->
-         <!-- Navbar -->
-         <ul class="navbar-nav ml-auto">
-            <li class="nav-item no-arrow text-white">
-               <span >Chào Nguyễn Hữu Lộc</span> |
-               <a class="text-white nounderline" href="#" data-toggle="modal" data-target="#logoutModal">Thoát</a>
-            </li>
-         </ul>
-      </nav>
-      <div id="wrapper">
-         <!-- Sidebar -->
-         <ul class="sidebar navbar-nav">
-            <li class="nav-item">
-               <a class="nav-link" href="../../pages/dashboard/index.html"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Tổng quan</span></a>
-            </li>
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span></a>
-               <div class="dropdown-menu" aria-labelledby="">
-                  <a class="dropdown-item" href="../../pages/order/list.html">Danh sách</a>
-                  <a class="dropdown-item" href="../../pages/order/add.html">Thêm</a>
-               </div>
-            </li>
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fab fa-product-hunt"></i> <span>Sản phẩm</span></a>
+      </button>
+      <!-- Navbar Search -->
+      <!-- Navbar -->
+      <ul class="navbar-nav ml-auto">
+         <li class="nav-item no-arrow text-white">
+            <span >Chào Nguyễn Hữu Lộc</span> |
+            <a class="text-white nounderline" href="#" data-toggle="modal" data-target="#logoutModal">Thoát</a>
+         </li>
+      </ul>
+   </nav>
+   <div id="wrapper">
+      <!-- Sidebar -->
+      <ul class="sidebar navbar-nav">
+         <li class="nav-item">
+            <a class="nav-link" href="../../pages/dashboard/index.html"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Tổng quan</span></a>
+         </li>
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span></a>
+            <div class="dropdown-menu" aria-labelledby="">
+               <a class="dropdown-item" href="../../pages/order/list.html">Danh sách</a>
+               <a class="dropdown-item" href="../../pages/order/add.html">Thêm</a>
+            </div>
+         </li>
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fab fa-product-hunt"></i> <span>Sản phẩm</span></a>
                <div class="dropdown-menu" aria-labelledby="">
                   <a class="dropdown-item" href="../../pages/product/list.html">Danh sách</a>
                   <a class="dropdown-item" href="../../pages/product/add.html">Thêm</a>
@@ -72,7 +72,7 @@
                   <a class="dropdown-item" href="../../pages/customer/add.html">Thêm</a>
                </div>
             </li>
-            <li class="nav-item dropdown active show">
+            <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-folder"></i> <span>Danh mục</span></a>
                <div class="dropdown-menu" aria-labelledby="">
                   <a class="dropdown-item" href="../../pages/category/list.html">Danh sách</a>
@@ -94,11 +94,11 @@
                   <a class="dropdown-item" href="../../pages/transport/add.html">Thêm</a>
                </div>
             </li>
-            <li class="nav-item dropdow">
+            <li class="nav-item dropdow active show">
                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-users"></i> <span>Nhân viên</span></a>
-               <div class="dropdown-menu" aria-labelledby="">
+               <div class="dropdown-menu show" aria-labelledby="">
                   <a class="dropdown-item" href="../../pages/staff/list.html">Danh sách</a>
-                  <a class="dropdown-item" href="../../pages/staff/add.html">Thêm</a>
+                  <a class="dropdown-item active" href="../../pages/staff/add.html">Thêm</a>
                </div>
             </li>
             <li class="nav-item dropdown">
@@ -127,19 +127,51 @@
                   <li class="breadcrumb-item">
                      <a href="index.php">Quản lý</a>
                   </li>
-                  <li class="breadcrumb-item active">Danh mục</li>
+                  <li class="breadcrumb-item active">Nhân viên</li>
                </ol>
                <!-- /form -->
                <form method="post" action="" enctype="multipart/form-data">
                   <div class="form-group row">
-                     <label class="col-md-12 control-label" for="name">Tên</label>  
+                     <label class="col-md-12 control-label" for="fullname">Họ Và Tên</label>  
                      <div class="col-md-9 col-lg-6">
-                        <input type="hidden" name="id" value="1" class="form-control">
-                        <input name="name" id="name" type="text" value="Kem Chống Nắng" class="form-control">                       
+                        <input name="fullname" id="fullname" type="text" value="" class="form-control">                        
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-md-12 control-label" for="username">Tên Đăng Nhập</label>  
+                     <div class="col-md-9 col-lg-6">                           
+                        <input name="username" id="username" type="text" value="" class="form-control">                        
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-md-12 control-label" for="password">Mật Khẩu</label>  
+                     <div class="col-md-9 col-lg-6">                           
+                        <input name="password" id="password" type="password" value="" class="form-control">                      
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-md-12 control-label" for="mobile">Số Điện Thoại</label>  
+                     <div class="col-md-9 col-lg-6">                           
+                        <input name="mobile" id="mobile" type="text" value="" class="form-control">                       
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-md-12 control-label" for="email">Email</label>  
+                     <div class="col-md-9 col-lg-6">                           
+                        <input name="email" id="email" type="text" value="" class="form-control">                      
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-md-12 control-label" for="role">Vai trò</label>  
+                     <div class="col-md-9 col-lg-6">
+                        <select class="form-control">
+                           <option value="1">Quản trị</option>
+                           <option value="2">Nhân viên</option>
+                        </select>
                      </div>
                   </div>
                   <div class="form-action">
-                     <input type="submit" class="btn btn-primary btn-sm" value="Cập nhật" name="update">
+                     <input type="submit" class="btn btn-primary btn-sm" value="Lưu" name="save">
                   </div>
                </form>
                <!-- /form -->
@@ -159,7 +191,7 @@
       <!-- /#wrapper -->
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
+         <i class="fas fa-angle-up"></i>
       </a>
       <!-- Logout Modal-->
       <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -168,7 +200,7 @@
                <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                   <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
+                     <span aria-hidden="true">×</span>
                   </button>
                </div>
                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
@@ -193,4 +225,4 @@
       <script src="../../js/demo/datatables-demo.js"></script>
       <script src="../../js/admin.js"></script>
    </body>
-</html>
+   </html>

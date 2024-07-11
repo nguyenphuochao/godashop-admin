@@ -48,6 +48,19 @@ class CategoryRepository extends BaseRepository
         return false;
     }
 
+    function update($category)
+    {
+        global $conn;
+        $id = $category->getID();
+        $name = $category->getName();
+        $sql = "UPDATE category SET name = '$name' WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
     function delete($category)
     {
         global $conn;
@@ -59,5 +72,4 @@ class CategoryRepository extends BaseRepository
         $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
         return false;
     }
-
 }

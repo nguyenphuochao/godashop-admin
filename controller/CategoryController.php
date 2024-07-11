@@ -25,6 +25,27 @@ class CategoryController
         }
     }
 
+    function edit()
+    {
+        $id = $_GET['id'];
+        $categoryRepository = new CategoryRepository();
+        $category = $categoryRepository->find($id);
+
+        require "view/category/edit.php";
+    }
+
+    function update()
+    {
+        $id = $_POST["id"];
+        $categoryRepository = new CategoryRepository();
+        $category = $categoryRepository->find($id);
+        $category->setName($_POST["name"]);
+        if ($categoryRepository->update($category)) {
+            $_SESSION["success"] = "Cập nhật danh mục thành công";
+            header("Location: index.php?c=category");
+        }
+    }
+
     function delete()
     {
         $id = $_GET['id'];

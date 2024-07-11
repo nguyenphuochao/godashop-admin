@@ -53,6 +53,7 @@ $(function () {
 					self.submit();
 				} else {
 					$(".error").html(rs.message);
+					window.scrollTo({ top: 0, behavior: 'smooth' });
 				}
 			})
 			.fail(function () {

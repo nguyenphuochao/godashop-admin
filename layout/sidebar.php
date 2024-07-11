@@ -62,9 +62,9 @@
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-users"></i> <span>Nhân viên</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/staff/list.html">Danh sách</a>
-            <a class="dropdown-item" href="../../pages/staff/add.html">Thêm</a>
+        <div class="dropdown-menu <?=$c == 'staff' ? "show" : "" ?>" aria-labelledby="">
+            <a class="dropdown-item <?=$c == 'staff' & $a == 'index' ? "active" : ""?>" href="index.php?c=staff">Danh sách</a>
+            <a class="dropdown-item <?=$c == 'staff' & $a == 'add' ? "active" : ""?>" href="index.php?c=staff&a=add">Thêm</a>
         </div>
     </li>
     <li class="nav-item dropdown">

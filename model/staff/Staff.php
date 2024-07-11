@@ -55,4 +55,48 @@ class Staff
     {
         return $this->is_active;
     }
+
+    // set attribute
+    function setRoleID($role_id)
+    {
+        $this->role_id = $role_id;
+        return $this;
+    }
+    function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+    function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+        return $this;
+    }
+    function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+    function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+    function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+    function setIsActive($is_active)
+    {
+        $this->is_active = $is_active;
+        return $this;
+    }
+
+    function getRole()
+    {
+        $roleRepository = new RoleRepository();
+        $role = $roleRepository->find($this->role_id);
+        return $role;
+    }
 }

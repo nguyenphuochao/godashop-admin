@@ -31,9 +31,12 @@
                            <tr>
                               <td><input type="checkbox" name="ids[]" value="<?=$category->getID() ?>"></td>
                               <td><?= $category->getName() ?></td>
-                              <td> <input type="button" onclick="Edit('1');" value="Sửa" class="btn btn-warning btn-sm"></td>
                               <td>
-                                 <a data="<?= $category->getID() ?>" href="index.php?c=category&a=delete&id=<?= $category->getID() ?>" class="btn btn-danger btn-sm btn-delete-cat">Xóa</a>
+                                 <a class="btn btn-warning btn-sm" href="index.php?c=category&a=edit&id=<?=$category->getID()?>">Sửa</a>
+                              </td>
+                              <td>
+                                 <a data="<?= $category->getID() ?>" href="index.php?c=category&a=delete&id=<?= $category->getID()?>" 
+                                 class="btn btn-danger btn-sm btn-delete-cat">Xóa</a>
                               </td>
                            </tr>
                         <?php endforeach; ?>

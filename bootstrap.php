@@ -42,3 +42,6 @@ require "model/comment/CommentRepository.php";
 
 require "model/image_item/ImageItem.php";
 require "model/image_item/ImageItemRepository.php";
+
+require "model/role/Role.php";
+require "model/role/RoleRepository.php";
