@@ -1,1 +1,1 @@
-Xây dựng project quản trị bán hàng bằng PHP OOP thuần
+Xây dựng project quản trị bán hàng bằng PHP OOP MVC thuần

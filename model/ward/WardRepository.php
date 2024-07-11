@@ -12,7 +12,6 @@ class WardRepository extends BaseRepository
         if ($order) {
             $sql .= " ORDER BY $order";
         }
-    
         $result = $conn->query($sql);
         $wards = [];
     

@@ -129,13 +129,26 @@ class Customer
         return $this;
     }
 
-    // ------------ Relationship
-
-    // belongsTo ward
     function getWard()
     {
+        if (empty($this->ward_id)) return null;
         $wardRepository = new WardRepository();
         $ward = $wardRepository->find($this->ward_id);
         return $ward;
+    }
+
+    function getAddress()
+    {
+        $address = "";
+        if ($this->housenumber_street) {
+            $address = $this->housenumber_street;
+        }
+        if ($this->ward_id) {
+            $ward = $this->getWard()->getName();
+            $district = $this->getWard()->getDistrict()->getName();
+            $province = $this->getWard()->getDistrict()->getProvince()->getName();
+            $address .= ", $ward, $district, $province";
+        }
+        return $address;
     }
 }

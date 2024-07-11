@@ -28,22 +28,22 @@
 
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="far fa-image"></i> <span>Hình ảnh</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/image/list.html">Danh sách</a>
+        <div class="dropdown-menu <?= $c == 'imageitem' ? 'show' : '' ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'imageitem' ? 'active' : '' ?>" href="index.php?c=imageitem">Danh sách</a>
         </div>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-user-alt"></i> <span>Khách hàng</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/customer/list.html">Danh sách</a>
-            <a class="dropdown-item" href="../../pages/customer/add.html">Thêm</a>
+        <div class="dropdown-menu <?= $c == 'customer' ? "show" : "" ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'customer' && $a == 'index' ? "active" : "" ?>" href="index.php?c=customer">Danh sách</a>
+            <a class="dropdown-item <?= $c == 'customer' && $a == 'add' ? "active" : "" ?>" href="index.php?c=customer&a=add">Thêm</a>
         </div>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-folder"></i> <span>Danh mục</span></a>
-        <div class="dropdown-menu" aria-labelledby="">
-            <a class="dropdown-item" href="../../pages/category/list.html">Danh sách</a>
-            <a class="dropdown-item" href="../../pages/category/add.html">Thêm</a>
+        <div class="dropdown-menu <?= $c == 'category' ? "show" : "" ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'category' && $a == 'index' ? "active" : "" ?>" href="index.php?c=category">Danh sách</a>
+            <a class="dropdown-item <?= $c == 'category' && $a == 'add' ? "active" : "" ?>" href="index.php?c=category&a=add">Thêm</a>
         </div>
     </li>
     <li class="nav-item dropdown">
@@ -86,3 +86,13 @@
         </div>
     </li>
 </ul>
+
+<div class="message bg-info text-center" style="position: absolute; left:50%; transform: translateX(-50%);width:100%"><?= !empty($_SESSION["success"]) ? $_SESSION["success"] : "" ?></div>
+<?php
+unset($_SESSION["success"]);
+?>
+
+<div class="error bg-danger text-center" style="position: absolute; left:50%; transform: translateX(-50%);width:100%; color:white"><?= !empty($_SESSION["error"]) ? $_SESSION["error"] : "" ?></div>
+<?php
+unset($_SESSION["error"]);
+?>

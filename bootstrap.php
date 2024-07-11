@@ -39,3 +39,6 @@ require "model/transport/TransportRepository.php";
 
 require "model/comment/Comment.php";
 require "model/comment/CommentRepository.php";
+
+require "model/image_item/ImageItem.php";
+require "model/image_item/ImageItemRepository.php";

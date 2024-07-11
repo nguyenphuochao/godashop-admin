@@ -1,6 +1,65 @@
 // load jquery sau khi tải xong trang html
 $(function () {
 
+	// xóa category
+	$(".btn-delete-cat").click(function (event) {
+		event.preventDefault();
+		if (!confirm('Bạn có chắc chắn muốn xóa không?')) {
+			return;
+		}
+		var url = "index.php?c=category&a=checkDelete";
+		var type = 'GET';
+		var category_id = $(this).attr('data');
+		var href = $(this).attr('href');
+		$.ajax({
+			type: type,
+			url: url,
+			data: {
+				category_id: category_id
+			},
+		})
+			.done(function (data) {
+				var rs = JSON.parse(data);
+				console.log(rs);
+				if (rs.can_detele == 1) {
+					window.location.href = href;
+				} else {
+					$(".error").html(rs.message);
+				}
+			})
+			.fail(function () {
+				console.log("error");
+			})
+	});
+
+	// Xóa nhiều
+	$("#delete").parent().parent("form").submit(function (event) {
+		event.preventDefault();
+		if (!confirm("Bạn muốn xóa phải không?")) {
+			return false;
+		}
+		var type = 'GET';
+		var form_data = $(this).serialize();
+		var c = getUrlParameter('c');
+		var self = this;
+		$.ajax({
+			type: type,
+			url: 'index.php?c=' + c + '&a=checkDeletes',
+			data: form_data
+		})
+			.done(function (data) {
+				var rs = JSON.parse(data);
+				if (rs.can_detele == 1) {
+					self.submit();
+				} else {
+					$(".error").html(rs.message);
+				}
+			})
+			.fail(function () {
+				console.log("error");
+			})
+	});
+
 	// thay đổi province(tỉnh/thành phố)
 	$("#content-wrapper .province").change(function (event) {
 		var province_id = $(this).val();
@@ -264,6 +323,26 @@ function updateShippingFeeAjax(province_id) {
 		});
 
 }
+
+var loadFile = function (event) {
+	var image = document.getElementById('image');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+var getUrlParameter = function getUrlParameter(sParam) {
+	var sPageURL = window.location.search.substring(1),
+		sURLVariables = sPageURL.split('&'),
+		sParameterName,
+		i;
+
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
+
+		if (sParameterName[0] === sParam) {
+			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+		}
+	}
+};
 
 var getUrlParameter = function getUrlParameter(sParam) {
 	var sPageURL = window.location.search.substring(1),

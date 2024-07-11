@@ -1,19 +1,14 @@
 <?php
 class CategoryRepository extends BaseRepository
 {
-    function fetchAll($condition = null, $sort = null, $limit = null)
+
+    protected function fetchAll($condition = null)
     {
         global $conn;
         $categories = array();
         $sql = "SELECT * FROM category";
         if ($condition) {
             $sql .= " WHERE $condition";
-        }
-        if ($sort) {
-            $sql .= " $sort";
-        }
-        if ($limit) {
-            $sql .= " $limit";
         }
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
@@ -27,10 +22,12 @@ class CategoryRepository extends BaseRepository
         }
         return $categories;
     }
+
     function getAll()
     {
         return $this->fetchAll();
     }
+
     function find($id)
     {
         $condition = "id = $id";
@@ -38,4 +35,29 @@ class CategoryRepository extends BaseRepository
         $category = current($categories);
         return $category;
     }
+
+    function save($data)
+    {
+        global $conn;
+        $name = $data["name"];
+        $sql = "INSERT INTO category (name) VALUES ('$name')";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
+    function delete($category)
+    {
+        global $conn;
+        $id = $category->getID();
+        $sql = "DELETE FROM category WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
 }

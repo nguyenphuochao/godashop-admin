@@ -75,65 +75,12 @@
                     <label>Địa chỉ giao hàng</label>
                 </div>
                 <div class="col-sm-8 col-lg-6">
-                    <?php
-                    $customer_shipping_name = '';
-                    $customer_shipping_mobile = '';
-                    $customer_province_id = '';
-                    $customer_district_id = '';
-                    $customer_ward_id = '';
-                    $districts = array(); // set default districts để tránh bị undifined
-                    $wards = array(); // set default wards để tránh bị undifined
-                    // trường hợp nếu chọn khách hàng đã có ward_id
-                    // if (!empty($customer)) {
-                    //     $customer_shipping_name = $customer->getShippingName();
-                    //     $customer_shipping_mobile = $customer->getShippingMobile();
-                    //     $customer_ward = $customer->getWard();
-                    //     if (!empty($customer_ward)) {
-                    //         $customer_district = $customer_ward->getDistrict(); // lấy dc quận/huyện
-                    //         $customer_province = $customer_district->getProvince(); // lấy dc tỉnh/thành phố
-                    //         $districts = $customer_province->getDistricts(); // từ tỉnh lấy danh sách quận/huyện
-                    //         $wards = $customer_district->getWards(); // từ quận lấy danh sách phường/xã
-
-                    //         $customer_province_id = $customer_province->getID();
-                    //         $customer_district_id = $customer_district->getID();
-                    //         $customer_ward_id = $customer_ward->getID();
-                    //     }
-                    // }
-                    ?>
+                    <?php require "layout/address_variable.php" ?>
                     <div class="row">
-                        <!-- Province -->
-                        <div class="col-sm-4">
-                            <select name="province" class="form-control province">
-                                <option value="">Tỉnh / thành phố</option>
-                                <?php foreach ($provinces as $province) : ?>
-                                    <option <?= $customer_province_id == $province->getID() ? "selected" : "" ?>
-                                    value="<?= $province->getID() ?>"><?= $province->getName(); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <!-- District -->
-                        <div class="col-sm-4">
-                            <select name="district" class="form-control district" required>
-                                <option value="">Quận / huyện</option>
-                                <?php foreach ($districts as $district) : ?>
-                                    <option <?= $customer_district_id == $district->getID() ? "selected" : "" ?> 
-                                    value="<?= $district->getID() ?>"><?= $district->getName() ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <!-- Ward -->
-                        <div class="col-sm-4">
-                            <select name="ward" class="form-control ward">
-                                <option value="">Phường / xã</option>
-                                <?php foreach ($wards as $ward) : ?>
-                                    <option <?= $customer_ward_id == $ward->getID() ? "selected" : "" ?>  
-                                    value="<?= $ward->getID() ?>"><?= $ward->getName() ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                        <?php require "layout/address_layout.php"; ?>
                         <!-- shipping_housenumber_street -->
                         <div class="col-sm-12 mt-2">
-                            <input type="text" name="shipping_housenumber_street" class="form-control housenumber-street">
+                            <input type="text" name="shipping_housenumber_street" placeholder="Số nhà, đường" class="form-control housenumber-street">
                         </div>
                     </div>
                 </div>
