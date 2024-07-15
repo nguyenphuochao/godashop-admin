@@ -41,7 +41,7 @@
                               <td><?= $staff->getMobile() ?></td>
                               <td><?= $staff->getRole()->getName() ?></td>
                               <td>
-                                 <a class="btn btn-warning btn-sm">Sửa</a>
+                                 <a class="btn btn-warning btn-sm" href="index.php?c=staff&a=edit&id=<?=$staff->getID()?>">Sửa</a>
                               </td>
                               <td>
                                  <?php if ($staff->getIsActive() == 1) : ?>

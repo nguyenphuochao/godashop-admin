@@ -59,6 +59,40 @@ class StaffRepository extends BaseRepository
         return $staff;
     }
 
+    function save($data)
+    {
+        global $conn;
+        $role_id = $data["role_id"];
+        $name = $data["name"];
+        $mobile = $data["mobile"];
+        $username = $data["username"];
+        $password = $data["password"];
+        $email = $data["email"];
+        $is_active = $data["is_active"];
+
+        $sql = "INSERT INTO staff (
+                role_id, 
+                name, 
+                mobile, 
+                username, 
+                password, 
+                email, 
+                is_active)
+                VALUES (
+                $role_id, 
+                '$name', 
+                '$mobile', 
+                '$username', 
+                '$password', 
+                '$email', 
+                $is_active)";
+        if ($conn->query($sql)) {
+            return true;
+        }
+        $this->error = "Error:" . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
     function update($staff)
     {
         global $conn;
@@ -70,7 +104,7 @@ class StaffRepository extends BaseRepository
         $password = $staff->getPassword();
         $email = $staff->getEmail();
         $is_active = $staff->getIsActive();
-        
+
         $sql = "UPDATE staff SET 
                 role_id = $role_id,
                 name = '$name',
@@ -86,5 +120,23 @@ class StaffRepository extends BaseRepository
         }
         $this->error =  "Error:" . $sql . PHP_EOL . $conn->error;
         return false;
+    }
+
+    function getActionNames($staff)
+    {
+        global $conn;
+        $actionNames = [];
+        $role_id = $staff->getRoleID();
+        $sql = "SELECT *
+                FROM role_action JOIN action 
+                ON role_action.action_id = action.id
+                WHERE role_action.role_id = $role_id";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $actionNames[] = $row["name"];
+            }
+        }
+        return $actionNames;
     }
 }

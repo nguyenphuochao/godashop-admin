@@ -1,6 +1,14 @@
 <ul class="sidebar navbar-nav">
     <?php
     global $c, $a;
+    $aclService = new ACLService();
+    $staffRepository = new StaffRepository();
+    $staff = $staffRepository->findEmail($_SESSION['email']);
+    // if (!$aclService->hasPermission($staff, $c, $a)) {
+    //     $_SESSION["error"] =  $aclService->getMessage();
+    //     header("Location: index.php");
+    //     exit;
+    // }
     ?>
     <li class="nav-item <?= $c == 'dashboard' ? 'active' : '' ?>">
         <a class="nav-link" href="index.php"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Tổng quan</span></a>
@@ -62,9 +70,9 @@
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id=""><i class="fas fa-users"></i> <span>Nhân viên</span></a>
-        <div class="dropdown-menu <?=$c == 'staff' ? "show" : "" ?>" aria-labelledby="">
-            <a class="dropdown-item <?=$c == 'staff' & $a == 'index' ? "active" : ""?>" href="index.php?c=staff">Danh sách</a>
-            <a class="dropdown-item <?=$c == 'staff' & $a == 'add' ? "active" : ""?>" href="index.php?c=staff&a=add">Thêm</a>
+        <div class="dropdown-menu <?= $c == 'staff' ? "show" : "" ?>" aria-labelledby="">
+            <a class="dropdown-item <?= $c == 'staff' & $a == 'index' ? "active" : "" ?>" href="index.php?c=staff">Danh sách</a>
+            <a class="dropdown-item <?= $c == 'staff' & $a == 'add' ? "active" : "" ?>" href="index.php?c=staff&a=add">Thêm</a>
         </div>
     </li>
     <li class="nav-item dropdown">
