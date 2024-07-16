@@ -20,6 +20,20 @@ class StaffController
 
     function save()
     {
+        $staffRepository = new StaffRepository();
+        $staff_username = $staffRepository->findByUsername($_POST["username"]);
+        $staff_email = $staffRepository->findEmail($_POST["email"]);
+        if ($staff_username) {
+            $_SESSION["error"] = "Tên đăng nhập đã tồn tại";
+            header("Location: index.php?c=staff&a=add");
+            exit;
+        }
+        if ($staff_email) {
+            $_SESSION["error"] = "Email đã tồn tại";
+            header("Location: index.php?c=staff&a=add");
+            exit;
+        }
+       
         $data = [];
         $data["role_id"] = $_POST["role"];
         $data["name"] = $_POST["name"];
@@ -28,19 +42,19 @@ class StaffController
         $data["password"] = md5($_POST["password"]);
         $data["email"] = $_POST["email"];
         $data["is_active"] = $_POST["is_active"];
-        $staffRepository = new StaffRepository();
         if ($staffRepository->save($data)) {
             $_SESSION["success"] = "Thêm nhân viên thành công";
             header("Location: index.php?c=staff");
             exit;
         }
+        echo $staffRepository->getError();
     }
 
     function edit()
     {
         $id = $_GET['id'];
         $staffRepository = new StaffRepository();
-        $staff = $staffRepository->find($id);
+        $staff1 = $staffRepository->find($id);
 
         $roleRepository = new RoleRepository();
         $roles = $roleRepository->getAll();
@@ -65,7 +79,7 @@ class StaffController
         if (!empty($_POST["is_active"])) {
             $staff->setIsActive(1);
         }
-        if($staff->getRoleID() == 1){
+        if ($staff->getRoleID() == 1) {
             $staff->setIsActive(1);
         }
         if ($staffRepository->update($staff)) {

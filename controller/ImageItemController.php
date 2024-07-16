@@ -36,6 +36,7 @@ class ImageItemController
     function deletes()
     {
         if (empty($_POST["ids"])) {
+            $_SESSION["error"] = "Vui lòng chọn";
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
@@ -44,6 +45,7 @@ class ImageItemController
         // dùng for cho mảng tuần tự 1 chiều
         for ($i = 0; $i <= count($ids) - 1; $i++) {
             if ($this->remove($ids[$i])) {
+                $_SESSION["success"] = "Xóa thành công";
                 header("Location: index.php?c=imageitem&a=detail&product_id=$product_id");
             }
         }

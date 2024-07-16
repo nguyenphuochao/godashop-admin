@@ -48,3 +48,6 @@ require "model/role/RoleRepository.php";
 
 require "model/action/Action.php";
 require "model/action/ActionRepository.php";
+
+require "model/role_action/RoleAction.php";
+require "model/role_action/RoleActionRepository.php";

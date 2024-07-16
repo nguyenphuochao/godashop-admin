@@ -32,7 +32,7 @@
         if (empty($_SESSION['email'])) {
             if (!empty($_COOKIE["email"])) {
                 $_SESSION["name"] = $_COOKIE["name"];
-            }else {
+            } else {
                 header("Location: login.php");
                 exit;
             }

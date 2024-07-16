@@ -14,15 +14,15 @@
          <div class="form-group row">
             <label class="col-md-12 control-label" for="fullname">Họ Và Tên</label>
             <div class="col-md-9 col-lg-6">
-               <input type="hidden" name="id" value="<?= $staff->getID() ?>" class="form-control input-md">
-               <input name="name" id="name" type="text" value="<?= $staff->getName() ?>" class="form-control">
+               <input type="hidden" name="id" value="<?= $staff1->getID() ?>" class="form-control input-md">
+               <input name="name" id="name" type="text" value="<?= $staff1->getName() ?>" class="form-control">
             </div>
          </div>
 
          <div class="form-group row">
             <label class="col-md-12 control-label" for="username">Tên Đăng Nhập</label>
             <div class="col-md-9 col-lg-6">
-               <input name="username" id="username" type="text" value="<?= $staff->getUsername() ?>" class="form-control">
+               <input name="username" id="username" type="text" value="<?= $staff1->getUsername() ?>" class="form-control">
             </div>
          </div>
 
@@ -36,32 +36,33 @@
          <div class="form-group row">
             <label class="col-md-12 control-label" for="mobile">Số Điện Thoại</label>
             <div class="col-md-9 col-lg-6">
-               <input name="mobile" id="mobile" type="text" value="<?= $staff->getMobile() ?>" class="form-control">
+               <input name="mobile" id="mobile" type="text" value="<?= $staff1->getMobile() ?>" class="form-control">
             </div>
          </div>
 
          <div class="form-group row">
             <label class="col-md-12 control-label" for="email">Email</label>
             <div class="col-md-9 col-lg-6">
-               <input name="email" id="email" type="text" value="<?= $staff->getEmail() ?>" class="form-control">
+               <input name="email" id="email" type="text" value="<?= $staff1->getEmail() ?>" class="form-control">
             </div>
          </div>
 
          <div class="form-group row">
             <label class="col-md-12 control-label" for="role">Vai trò</label>
             <div class="col-md-9 col-lg-6">
-               <select class="form-control" name="role">
+               <select class="form-control" name="role" required>
                   <option value="">Chọn vai trò</option>
                   <?php foreach ($roles as $role) : ?>
-                     <option <?= $role->getID() == $staff->getRoleID() ? "selected" : "" ?> value="<?= $role->getID() ?>"><?= $role->getName() ?></option>
+                     <option <?=$role->getID() == $staff1->getRoleID() ? "selected" : ""?> 
+                     value="<?= $role->getID() ?>"><?= $role->getName() ?></option>
                   <?php endforeach ?>
                </select>
             </div>
          </div>
 
-         <?php if ($staff->getRoleID() != 1) : ?>
+         <?php if ($staff1->getRoleID() != 1) : ?>
             <div class="form-grroup">
-               <label><input type="checkbox" name="is_active" value="1" <?= $staff->getIsActive() == 1 ? "checked" : "" ?>> Kích hoạt</label>
+               <label><input type="checkbox" name="is_active" value="1" <?= $staff1->getIsActive() == 1 ? "checked" : "" ?>> Kích hoạt</label>
             </div>
          <?php endif ?>
 
@@ -73,4 +74,4 @@
       </form>
       <!-- /form -->
    </div>
-<?php require "layout/footer.php"; ?>
+   <?php require "layout/footer.php"; ?>

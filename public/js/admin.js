@@ -1,35 +1,53 @@
+
+function deleteObject(self, event, confirm_message, url, data) {
+	event.preventDefault();
+	if (!confirm(confirm_message)) {
+		return;
+	}
+
+	$.ajax({
+		url: url,
+		data: data,
+	})
+		.done(function (response) {
+			var rs = JSON.parse(response);
+			var can_delete = rs.can_delete;//data chứa 0 hoặc 1
+			if (can_delete == 1) {
+				var href = $(self).attr('href');
+				window.location.href = href;
+			} else {
+				$(".error").html(rs.message);
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		})
+		.fail(function () {
+			console.log("error");
+		});
+}
+
 // load jquery sau khi tải xong trang html
 $(function () {
 
+	// xóa role
+	$(".btn-delete-role").click(function (event) {
+		var confirm_message = 'Bạn có muốn xóa vai trò này không?';
+		var url = "index.php?c=permission&a=checkDeleteRole";
+		var role_id = $(this).attr('data');
+		var data = {
+			role_id: role_id
+		}
+		deleteObject(this, event, confirm_message, url, data);
+	});
+
 	// xóa category
 	$(".btn-delete-cat").click(function (event) {
-		event.preventDefault();
-		if (!confirm('Bạn có chắc chắn muốn xóa không?')) {
-			return;
-		}
+		var confirm_message = 'Bạn có muốn xóa danh mục này không?';
 		var url = "index.php?c=category&a=checkDelete";
-		var type = 'GET';
 		var category_id = $(this).attr('data');
-		var href = $(this).attr('href');
-		$.ajax({
-			type: type,
-			url: url,
-			data: {
-				category_id: category_id
-			},
-		})
-			.done(function (data) {
-				var rs = JSON.parse(data);
-				console.log(rs);
-				if (rs.can_detele == 1) {
-					window.location.href = href;
-				} else {
-					$(".error").html(rs.message);
-				}
-			})
-			.fail(function () {
-				console.log("error");
-			})
+		var data = {
+			category_id: category_id
+		}
+		deleteObject(this, event, confirm_message, url, data);
 	});
 
 	// Xóa nhiều

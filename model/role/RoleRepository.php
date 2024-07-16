@@ -45,6 +45,19 @@ class RoleRepository extends BaseRepository
         return false;
     }
 
+    function update($role)
+    {
+        global $conn;
+        $id = $role->getID();
+        $name = $role->getName();
+        $sql = "UPDATE `role` SET name = '$name' WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
     function delete($role)
     {
         global $conn;

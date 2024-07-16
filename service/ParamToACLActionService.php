@@ -150,19 +150,19 @@ class ParamToACLActionService
                 }
                 break;
             case 'permission':
-                if (in_array($a, ["index"])) {
+                if (in_array($a, ["listRole", "listAction", "listRoleAction"])) {
                     $actionName = ACLService::VIEW_PERMISSION;
                 }
 
-                if (in_array($a, ["add", "save"])) {
+                if (in_array($a, ["addRole", "saveRole"])) {
                     $actionName = ACLService::ADD_PERMISSION;
                 }
 
-                if (in_array($a, ["edit", "update"])) {
+                if (in_array($a, ["editRole", "updateRole", "updateRoleAction"])) {
                     $actionName = ACLService::EDIT_PERMISSION;
                 }
 
-                if (in_array($a, ["delete", "deletes"])) {
+                if (in_array($a, ["deleteRole", "checkDeleteRole"])) {
                     $actionName = ACLService::DELETE_PERMISSION;
                 }
                 break;

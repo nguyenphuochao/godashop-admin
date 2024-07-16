@@ -59,6 +59,20 @@ class StaffRepository extends BaseRepository
         return $staff;
     }
 
+    function findByUsername($username)
+    {
+        $condition = "username = '$username'";
+        $staffs = $this->fetAll($condition);
+        $staff = current($staffs);
+        return $staff;
+    }
+
+    function getByRoleID($role_id)
+    {
+        $condition = "role_id = $role_id";
+        return $this->fetAll($condition);
+    }
+
     function save($data)
     {
         global $conn;

@@ -26,4 +26,18 @@ class Role
         $this->name = $name;
         return $this;
     }
+
+    function getActions()
+    {
+        $roleActionRepository = new RoleActionRepository();
+        $roleActions = $roleActionRepository->getByRoleID($this->id);
+        return $roleActions;
+    }
+
+    function getStaffs()
+    {
+        $staffRepository = new StaffRepository();
+        $staffs = $staffRepository->getByRoleID($this->id);
+        return $staffs;
+    }
 }

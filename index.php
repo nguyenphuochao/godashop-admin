@@ -4,10 +4,11 @@ require 'config/config.php';
 require 'config/connectDB.php';
 require "bootstrap.php"; // loads model
 
+include "load.php";
 // router
 $c = $_GET['c'] ?? 'dashboard';
 $a = $_GET['a'] ?? 'index';
-include "load.php";
+
 
 // check ACL
 if (!empty($_SESSION['email'])) {

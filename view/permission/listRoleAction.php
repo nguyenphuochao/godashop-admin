@@ -16,7 +16,7 @@
             <input type="hidden" name="role_id" value="<?= $role->getID() ?>" class="form-control input-md">
             <?php foreach ($actions as $action) : ?>
                <div class="col-md-9 col-lg-6">
-                  <input type="checkbox" name="action_ids[]" value="<?= $action->getID() ?>">
+                  <input type="checkbox" name="action_ids[]" value="<?= $action->getID() ?>" <?= in_array($action->getID(), $selected_actions) ? "checked" : "" ?> >
                   <?= $action->getDescription() ?>
                </div>
             <?php endforeach; ?>

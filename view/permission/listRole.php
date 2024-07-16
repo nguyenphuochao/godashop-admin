@@ -27,13 +27,14 @@
                      <?php foreach ($roles as $role) : ?>
                         <tr>
                            <td>
-                              <a href="index.php?c=permission&a=listRoleAction&id=<?=$role->getID()?>"><?= $role->getName() ?></a>
+                              <a href="index.php?c=permission&a=listRoleAction&id=<?= $role->getID() ?>"><?= $role->getName() ?></a>
                            </td>
                            <td>
                               <a href="index.php?c=permission&a=editRole&id=<?= $role->getID() ?>" class="btn btn-warning btn-sm">Sửa</a>
                            </td>
                            <td>
-                              <a href="index.php?c=permission&a=deleteRole&id=<?= $role->getID() ?>" class="btn btn-danger btn-sm">Xóa</a>
+                              <a data="<?=$role->getID() ?>" 
+                              href="index.php?c=permission&a=deleteRole&id=<?= $role->getID() ?>" class="btn btn-danger btn-sm btn-delete-role">Xóa</a>
                            </td>
                         </tr>
                      <?php endforeach; ?>
