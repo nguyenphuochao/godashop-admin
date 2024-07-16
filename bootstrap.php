@@ -45,3 +45,6 @@ require "model/image_item/ImageItemRepository.php";
 
 require "model/role/Role.php";
 require "model/role/RoleRepository.php";
+
+require "model/action/Action.php";
+require "model/action/ActionRepository.php";

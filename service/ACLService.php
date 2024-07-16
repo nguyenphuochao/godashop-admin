@@ -75,6 +75,15 @@ class ACLService
         return true;
     }
 
+    function hasMenus(Staff $staff, $actionName)
+    {
+        $actionNames = $this->getActionNames($staff);
+        if (in_array($actionName, $actionNames)) {
+            return true;
+        }
+        return false;
+    }
+
     // Trả về danh sách tên action của nhân viên
     function getActionNames(Staff $staff)
     {

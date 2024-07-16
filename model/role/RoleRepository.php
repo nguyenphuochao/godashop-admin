@@ -32,4 +32,28 @@ class RoleRepository extends BaseRepository
         $role = current($roles);
         return $role;
     }
+
+    function save($data)
+    {
+        global $conn;
+        $name = $data["name"];
+        $sql = "INSERT INTO role(name) VALUES ('$name')";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
+    function delete($role)
+    {
+        global $conn;
+        $id = $role->getID();
+        $sql = "DELETE FROM `role` WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
 }

@@ -149,6 +149,23 @@ class ParamToACLActionService
                     $actionName = ACLService::DELETE_NEWSLETTER;
                 }
                 break;
+            case 'permission':
+                if (in_array($a, ["index"])) {
+                    $actionName = ACLService::VIEW_PERMISSION;
+                }
+
+                if (in_array($a, ["add", "save"])) {
+                    $actionName = ACLService::ADD_PERMISSION;
+                }
+
+                if (in_array($a, ["edit", "update"])) {
+                    $actionName = ACLService::EDIT_PERMISSION;
+                }
+
+                if (in_array($a, ["delete", "deletes"])) {
+                    $actionName = ACLService::DELETE_PERMISSION;
+                }
+                break;
             case 'comment':
                 if (in_array($a, ["index"])) {
                     $actionName = ACLService::VIEW_COMMENT;

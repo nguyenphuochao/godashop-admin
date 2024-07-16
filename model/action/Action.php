@@ -1,16 +1,18 @@
 <?php
-class Role
+class Action
 {
+
     protected $id;
     protected $name;
+    protected $description;
 
-    function __construct($id, $name)
+    function __construct($id, $name, $description)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->description = $description;
     }
 
-    // get attribute
     function getID()
     {
         return $this->id;
@@ -19,11 +21,8 @@ class Role
     {
         return $this->name;
     }
-
-    // set attribute
-    function setName($name)
+    function getDescription()
     {
-        $this->name = $name;
-        return $this;
+        return $this->description;
     }
 }
