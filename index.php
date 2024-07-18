@@ -9,6 +9,10 @@ include "load.php";
 $c = $_GET['c'] ?? 'dashboard';
 $a = $_GET['a'] ?? 'index';
 
+// check login
+if (!($c == 'auth' && $a == 'login')) {
+    include "checkLogin.php";
+}
 
 // check ACL
 if (!empty($_SESSION['email'])) {

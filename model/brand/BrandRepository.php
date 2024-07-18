@@ -34,4 +34,49 @@ class BrandRepository extends BaseRepository
         $brand = current($brands);
         return $brand;
     }
+
+    function findByName($name)
+    {
+        $condition = "name = '$name'";
+        $brands = $this->fetchAll($condition);
+        $brand = current($brands);
+        return $brand;
+    }
+
+    function save($data)
+    {
+        global $conn;
+        $name = $data['name'];
+        $sql = "INSERT INTO brand (name) VALUES ('$name')";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "ERROR: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
+    function update($brand)
+    {
+        global $conn;
+        $id = $brand->getID();
+        $name = $brand->getName();
+        $sql = "UPDATE brand SET name = '$name' WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "ERROR: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
+
+    function delete($brand)
+    {
+        global $conn;
+        $id = $brand->getID();
+        $sql = "DELETE FROM brand WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        }
+        $this->error = "ERROR: " . $sql . PHP_EOL . $conn->error;
+        return false;
+    }
 }

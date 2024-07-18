@@ -56,10 +56,10 @@
                                     <td><?= $product->getCategory()->getName(); ?></td>
                                     <td><?= $product->getBrand()->getName(); ?></td>
                                     <td><?= $product->getCreatedDate() ?></td>
-                                    <td><a href="../../pages/comment/list.html">Đánh giá</a></td>
-                                    <td><a href="../../pages/image/list.html">Hình ảnh</a></td>
+                                    <td><a href="index.php?c=comment&a=detail&product_id=<?=$product->getID()?>">Đánh giá</a></td>
+                                    <td><a href="index.php?c=imageitem&a=detail&product_id=<?=$product->getID()?>">Hình ảnh</a></td>
                                     <td><a class="btn btn-warning btn-sm" href="index.php?c=product&a=edit&id=<?= $product->getID() ?>">Sửa</a></td>
-                                    <td><a onclick="return confirm('Bạn chắc xóa sản phẩm này?')" class="btn btn-danger btn-sm" href="index.php?c=product&a=delete&id=<?= $product->getID() ?>">Xóa</a></td>
+                                    <td><a data="<?=$product->getID()?>" class="btn btn-danger btn-sm btn-delete-product" href="index.php?c=product&a=delete&id=<?= $product->getID()?>">Xóa</a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -69,33 +69,3 @@
         </div>
     </div>
     <?php require "layout/footer.php"; ?>
-    <script>
-        $(function() {
-            $("input[name=deleteAll]").click(function(e) {
-                e.preventDefault();
-                var ids = [];
-                $(".ids:checked").each(function() {
-                    ids.push($(this).val());
-                });
-                if(ids.length == 0){
-                    alert('Vui lòng chọn sản phẩm cần xóa!!');
-                    return;
-                }
-                if (confirm('Bạn chắc xóa những sản phẩm này chứ?')) {
-                    $.ajax({
-                        type: "GET",
-                        url: "index.php?c=product&a=deleteAll",
-                        data: {
-                            ids: ids
-                        },
-                        success: function(response) {
-                            alert(response);
-                            location.reload();
-                            // console.log(response);
-                        }
-                    });
-                }
-
-            });
-        });
-    </script>

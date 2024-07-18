@@ -27,17 +27,6 @@
         </button>
         <!-- Navbar Search -->
         <!-- Navbar -->
-        <?php
-        // check login
-        if (empty($_SESSION['email'])) {
-            if (!empty($_COOKIE["email"])) {
-                $_SESSION["name"] = $_COOKIE["name"];
-            } else {
-                header("Location: login.php");
-                exit;
-            }
-        }
-        ?>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item no-arrow text-white">
                 <span><?= $_SESSION["name"] ?></span> |

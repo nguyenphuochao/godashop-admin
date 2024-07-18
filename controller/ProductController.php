@@ -5,6 +5,7 @@ class ProductController
     {
         $productRepository = new ProductRepository();
         $products = $productRepository->getAll();
+
         require 'view/product/index.php';
     }
 
@@ -15,6 +16,7 @@ class ProductController
 
         $brandRepository = new BrandRepository();
         $brands = $brandRepository->getAll();
+
         require "view/product/add.php";
     }
 
@@ -87,7 +89,9 @@ class ProductController
         if (!empty($_FILES["image"]["name"])) {
             // xóa hình cũ đi
             $file = "uploads/" . $product->getFeaturedImage();
-            unlink($file);
+            if (file_exists($file)) {
+                unlink($file);
+            }
             // Cập nhật lại hình
             $product->setFeaturedImage($_FILES["image"]["name"]);
             $file = $_FILES['image']['tmp_name'];
@@ -113,24 +117,20 @@ class ProductController
         $productRepository = new ProductRepository();
         $product = $productRepository->find($id);
         if ($productRepository->delete($product)) {
-            // xóa lun cái file ảnh
+            // delete image in folder uploads
             $file = "uploads/" . $product->getFeaturedImage();
             if (file_exists($file)) {
                 unlink($file);
             }
-            $_SESSION["success"] = "Xóa thành công sản phẩm";
-        } else {
-            $_SESSION["error"] = "Bạn không thể xóa sản phẩm đang tồn tại danh mục";
+            $_SESSION["success"] = "Xóa thành công sản phẩm {$product->getName()}";
+            header("Location: index.php?c=product");
+            exit;
         }
-
-
-        header("Location: index.php?c=product");
     }
 
     function deleteAll()
     {
-        $flag = true;
-        $ids = $_GET["ids"];
+        $ids = $_POST["ids"];
         foreach ($ids as $id) {
             $productRepository = new ProductRepository();
             $product = $productRepository->find($id);
@@ -167,5 +167,17 @@ class ProductController
         ];
         // trả về json cho trình duyệt
         echo json_encode($data);
+    }
+
+    function checkDelete()
+    {
+        $id = $_GET["product_id"];
+        $productRepository = new ProductRepository();
+        $product = $productRepository->find($id);
+        if(count($product->getOrderItems()) > 0){
+            echo json_encode(["can_delete" => 0, "message" => "Bạn không thể xóa sản phẩm đang chứa đơn hàng"]);
+           return;
+        }
+        echo json_encode(["can_delete" => 1, "message" => "OK"]);
     }
 }

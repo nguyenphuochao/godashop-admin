@@ -108,6 +108,12 @@ class ProductRepository extends BaseRepository
         return $product;
     }
 
+    function getByBrandID($brand_id)
+    {
+        $condition = "brand_id = $brand_id";
+        return $this->fetchAll($condition);
+    }
+
     function save($data)
     {
         global $conn;
@@ -182,21 +188,21 @@ class ProductRepository extends BaseRepository
         $description = $product->getDescription();
         $featured = $product->getFeatured();
         $sql = "UPDATE product SET
-                               barcode = '$barcode',
-                               sku = '$sku',
-                               name = '$name',
-                               price = '$price',
-                               discount_percentage = $discount_percentage,
-                               discount_from_date = '$discount_from_date',
-                               discount_to_date = '$discount_to_date',
-                               featured_image = '$featured_image',
-                               inventory_qty = $inventory_qty,
-                               category_id  = $category_id ,
-                               brand_id = $brand_id,
-                               description = '$description',
-                               featured = '$featured'
-                               WHERE id = $id
-                ";
+                       barcode = '$barcode',
+                       sku = '$sku',
+                       name = '$name',
+                       price = '$price',
+                       discount_percentage = $discount_percentage,
+                       discount_from_date = '$discount_from_date',
+                       discount_to_date = '$discount_to_date',
+                       featured_image = '$featured_image',
+                       inventory_qty = $inventory_qty,
+                       category_id  = $category_id ,
+                       brand_id = $brand_id,
+                       description = '$description',
+                       featured = '$featured'
+                       WHERE id = $id
+        ";
         if ($conn->query($sql) === TRUE) {
             return true;
         }
@@ -207,13 +213,30 @@ class ProductRepository extends BaseRepository
     function delete(Product $product)
     {
         global $conn;
+        $commentRepository = new CommentRepository();
+        $comments = $product->getComments();
+        foreach ($comments as $comment) {
+            if (!$commentRepository->delete($comment)) {
+                $this->error =  "Error: " . PHP_EOL . $conn->error;
+                return false;
+            }
+        }
+
+        $imageItemRepository = new ImageItemRepository();
+        $imageItems = $product->getImageItems();
+        foreach ($imageItems as $imageItem) {
+            if (!$imageItemRepository->delete($imageItem)) {
+                $this->error =  "Error: " . PHP_EOL . $conn->error;
+                return false;
+            }
+        }
+
         $id = $product->getID();
         $sql = "DELETE FROM product WHERE id = $id";
-
-        try {
-           $conn->query($sql);
-        } catch (Exception $e) {
-            $this->error = $e->getMessage();
+        if ($conn->query($sql) === TRUE) {
+            return true;
         }
+        $this->error =  "Error: " . $sql . PHP_EOL . $conn->error;
+        return false;
     }
 }

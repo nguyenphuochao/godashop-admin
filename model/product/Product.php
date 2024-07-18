@@ -211,11 +211,35 @@ class Product
         $category = $categoryRepository->find($this->category_id);
         return $category;
     }
-    // belogsTo Brand
+
+    // belongsTo Brand
     function getBrand()
     {
         $brandRepository = new BrandRepository();
         $brand = $brandRepository->find($this->brand_id);
         return $brand;
     }
+
+    // hasMany OrderItem
+    function getOrderItems()
+    {
+        $orderItemRepository = new OrderItemRepository();
+        $orderItems = $orderItemRepository->getByProductID($this->id);
+        return $orderItems;
+    }
+
+    function getComments()
+    {
+        $commentRepository = new CommentRepository();
+        $comments = $commentRepository->findByProductID($this->id);
+        return $comments;
+    }
+
+    function getImageItems()
+    {
+        $imageItemRepository = new ImageItemRepository();
+        $imageItems = $imageItemRepository->getByProductID($this->id);
+        return $imageItems;
+    }
+
 }

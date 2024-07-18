@@ -35,6 +35,13 @@ class OrderItemRepository extends BaseRepository
         return $order_items;
     }
 
+    function getByProductID($product_id)
+    {
+        $condition = "product_id = $product_id";
+        $order_items = $this->fetchAll($condition);
+        return $order_items;
+    }
+
     function find($product_id, $order_id)
     {
         $condition = "product_id = $product_id AND order_id = $order_id";
@@ -93,12 +100,13 @@ class OrderItemRepository extends BaseRepository
         return false;
     }
 
-    function delete(OrderItem $order_item){
+    function delete(OrderItem $order_item)
+    {
         global $conn;
         $order_id = $order_item->getOrderID();
         $product_id = $order_item->getProductID();
         $sql = "DELETE FROM `order_item` WHERE order_id = $order_id AND product_id = $product_id";
-        if($conn->query($sql) === TRUE){
+        if ($conn->query($sql) === TRUE) {
             return true;
         }
         $this->error = "Error: " . $sql . PHP_EOL . $conn->error;

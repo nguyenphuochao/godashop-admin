@@ -16,12 +16,15 @@ class CategoryController
 
     function save()
     {
-        $data = [];
-        $data["name"] = $_POST["name"];
-        $categoryRepository = new CategoryRepository();
-        if ($categoryRepository->save($data)) {
-            $_SESSION["success"] = "Thêm mới danh mục thành công";
-            header("Location: index.php?c=category");
+        $names = $_POST["names"];
+        foreach ($names as $name) {
+            $data = [];
+            $data["name"] = $name;
+            $categoryRepository = new CategoryRepository();
+            if ($categoryRepository->save($data)) {
+                $_SESSION["success"] = "Thêm mới danh mục thành công";
+                header("Location: index.php?c=category");
+            }
         }
     }
 
@@ -89,11 +92,12 @@ class CategoryController
         $producs = $category->getProducts();
         if (count($producs) > 0) {
             // không xóa dc
-            echo json_encode(["can_detele" => 0, "message" => "Danh mục {$category->getName()} đang chứa sản phẩm, không thể xóa"]);
+            echo json_encode(["can_delete" => 0, "message" => "Danh mục {$category->getName()} đang chứa sản phẩm, không thể xóa"]);
             return;
         }
         // có thể xóa
-        echo json_encode(["can_detele" => 1, "message" => "OK"]);
+        echo json_encode(["can_delete" => 1, "message" => "OK"]);
+        return;
     }
 
     function checkDeletes()
@@ -109,11 +113,11 @@ class CategoryController
             }
         }
         if ($flag) {
-            // không thể xóa
+            // Có thể xóa
             echo json_encode(["can_detele" => 1, "message" => "OK"]);
             return false;
         }
-        // có thể xóa
+        // Không thể xóa
         echo json_encode(["can_detele" => 0, "message" => "Danh mục có chứa sản phẩm, không thể xóa"]);
     }
 }

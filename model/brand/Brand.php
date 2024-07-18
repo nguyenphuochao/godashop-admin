@@ -9,11 +9,13 @@ class Brand
         $this->id = $id;
         $this->name = $name;
     }
+
     // Get giá trị của thuộc tính
     function getID()
     {
         return $this->id;
     }
+    
     function getName()
     {
         return $this->name;
@@ -24,6 +26,13 @@ class Brand
     {
         $this->name = $name;
         return $this;
+    }
+
+    function getProducts()
+    {
+        $productRepository = new ProductRepository();
+        $products = $productRepository->getByBrandID($this->id);
+        return $products;
     }
     
 }

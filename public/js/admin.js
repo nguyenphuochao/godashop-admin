@@ -50,8 +50,30 @@ $(function () {
 		deleteObject(this, event, confirm_message, url, data);
 	});
 
+	// xóa brand
+	$(".btn-delete-brand").click(function (event) {
+		var confirm_message = 'Bạn có muốn xóa nhãn hiệu này không?';
+		var url = "index.php?c=brand&a=checkDelete";
+		var brand_id = $(this).attr('data');
+		var data = {
+			brand_id: brand_id
+		}
+		deleteObject(this, event, confirm_message, url, data);
+	});
+
+	// xóa product
+	$(".btn-delete-product").click(function (event) {
+		var confirm_message = 'Bạn có muốn xóa sản phẩm này không?';
+		var url = "index.php?c=product&a=checkDelete";
+		var product_id = $(this).attr('data');
+		var data = {
+			product_id: product_id
+		}
+		deleteObject(this, event, confirm_message, url, data);
+	});
+
 	// Xóa nhiều
-	$("#delete").parent().parent("form").submit(function (event) {
+	$("#delete").parents("form").submit(function (event) {
 		event.preventDefault();
 		if (!confirm("Bạn muốn xóa phải không?")) {
 			return false;
@@ -67,7 +89,7 @@ $(function () {
 		})
 			.done(function (data) {
 				var rs = JSON.parse(data);
-				if (rs.can_detele == 1) {
+				if (rs.can_delete == 1) {
 					self.submit();
 				} else {
 					$(".error").html(rs.message);
